@@ -53,7 +53,7 @@ function DashboardPage() {
   if (!data) return <p className="text-sm text-muted-foreground">{t("common.loading")}</p>;
 
   const beltDist = Object.entries(
-    data.people.reduce<Record<string, number>>((acc, p) => {
+    (data.people as any[]).reduce<Record<string, number>>((acc: Record<string, number>, p: any) => {
       const k = p.current_belt ?? "—";
       acc[k] = (acc[k] ?? 0) + 1;
       return acc;
@@ -66,7 +66,7 @@ function DashboardPage() {
   });
   const achPerMonth = months.map((m) => ({
     label: m.label,
-    count: data.achievements.filter((a) => (a.achieved_at ?? "").startsWith(m.key)).length,
+    count: (data.achievements as any[]).filter((a: any) => (a.achieved_at ?? "").startsWith(m.key)).length,
   }));
 
   let cumulative = 0;
@@ -167,7 +167,7 @@ function DashboardPage() {
           <p className="text-sm text-muted-foreground">{t("dash.recent.empty")}</p>
         ) : (
           <ul className="divide-y divide-border">
-            {data.achievements.slice(0, 5).map((a) => (
+            {(data.achievements as any[]).slice(0, 5).map((a: any) => (
               <li key={a.id} className="flex items-center justify-between py-3 text-sm">
                 <div className="flex items-center gap-3">
                   <BeltBadge belt={a.belt} />

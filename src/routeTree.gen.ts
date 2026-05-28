@@ -14,10 +14,19 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as PainelRouteImport } from './routes/painel'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PainelIndexRouteImport } from './routes/painel.index'
+import { Route as PainelSuporteRouteImport } from './routes/painel.suporte'
+import { Route as PainelPraticantesRouteImport } from './routes/painel.praticantes'
+import { Route as PainelCreditosRouteImport } from './routes/painel.creditos'
+import { Route as PainelConfiguracoesRouteImport } from './routes/painel.configuracoes'
 import { Route as PIdRouteImport } from './routes/p.$id'
+import { Route as PainelPraticantesNovoRouteImport } from './routes/painel.praticantes.novo'
+import { Route as PainelConquistasNovaRouteImport } from './routes/painel.conquistas.nova'
+import { Route as PainelPraticantesIdEditarRouteImport } from './routes/painel.praticantes.$id.editar'
 
 const VerificarRoute = VerificarRouteImport.update({
   id: '/verificar',
@@ -44,6 +53,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
   path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
@@ -59,22 +73,72 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PainelIndexRoute = PainelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PainelRoute,
+} as any)
+const PainelSuporteRoute = PainelSuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => PainelRoute,
+} as any)
+const PainelPraticantesRoute = PainelPraticantesRouteImport.update({
+  id: '/praticantes',
+  path: '/praticantes',
+  getParentRoute: () => PainelRoute,
+} as any)
+const PainelCreditosRoute = PainelCreditosRouteImport.update({
+  id: '/creditos',
+  path: '/creditos',
+  getParentRoute: () => PainelRoute,
+} as any)
+const PainelConfiguracoesRoute = PainelConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => PainelRoute,
+} as any)
 const PIdRoute = PIdRouteImport.update({
   id: '/p/$id',
   path: '/p/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PainelPraticantesNovoRoute = PainelPraticantesNovoRouteImport.update({
+  id: '/novo',
+  path: '/novo',
+  getParentRoute: () => PainelPraticantesRoute,
+} as any)
+const PainelConquistasNovaRoute = PainelConquistasNovaRouteImport.update({
+  id: '/conquistas/nova',
+  path: '/conquistas/nova',
+  getParentRoute: () => PainelRoute,
+} as any)
+const PainelPraticantesIdEditarRoute =
+  PainelPraticantesIdEditarRouteImport.update({
+    id: '/$id/editar',
+    path: '/$id/editar',
+    getParentRoute: () => PainelPraticantesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
   '/p/$id': typeof PIdRoute
+  '/painel/configuracoes': typeof PainelConfiguracoesRoute
+  '/painel/creditos': typeof PainelCreditosRoute
+  '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
+  '/painel/suporte': typeof PainelSuporteRoute
+  '/painel/': typeof PainelIndexRoute
+  '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
+  '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
+  '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,18 +150,35 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
   '/p/$id': typeof PIdRoute
+  '/painel/configuracoes': typeof PainelConfiguracoesRoute
+  '/painel/creditos': typeof PainelCreditosRoute
+  '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
+  '/painel/suporte': typeof PainelSuporteRoute
+  '/painel': typeof PainelIndexRoute
+  '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
+  '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
+  '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
   '/p/$id': typeof PIdRoute
+  '/painel/configuracoes': typeof PainelConfiguracoesRoute
+  '/painel/creditos': typeof PainelCreditosRoute
+  '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
+  '/painel/suporte': typeof PainelSuporteRoute
+  '/painel/': typeof PainelIndexRoute
+  '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
+  '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
+  '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -105,12 +186,21 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
     | '/sobre'
     | '/termos'
     | '/verificar'
     | '/p/$id'
+    | '/painel/configuracoes'
+    | '/painel/creditos'
+    | '/painel/praticantes'
+    | '/painel/suporte'
+    | '/painel/'
+    | '/painel/conquistas/nova'
+    | '/painel/praticantes/novo'
+    | '/painel/praticantes/$id/editar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,23 +212,41 @@ export interface FileRouteTypes {
     | '/termos'
     | '/verificar'
     | '/p/$id'
+    | '/painel/configuracoes'
+    | '/painel/creditos'
+    | '/painel/praticantes'
+    | '/painel/suporte'
+    | '/painel'
+    | '/painel/conquistas/nova'
+    | '/painel/praticantes/novo'
+    | '/painel/praticantes/$id/editar'
   id:
     | '__root__'
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
     | '/sobre'
     | '/termos'
     | '/verificar'
     | '/p/$id'
+    | '/painel/configuracoes'
+    | '/painel/creditos'
+    | '/painel/praticantes'
+    | '/painel/suporte'
+    | '/painel/'
+    | '/painel/conquistas/nova'
+    | '/painel/praticantes/novo'
+    | '/painel/praticantes/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
   ContatoRoute: typeof ContatoRoute
+  PainelRoute: typeof PainelRouteWithChildren
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   SobreRoute: typeof SobreRoute
@@ -184,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contato': {
       id: '/contato'
       path: '/contato'
@@ -205,6 +320,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/painel/': {
+      id: '/painel/'
+      path: '/'
+      fullPath: '/painel/'
+      preLoaderRoute: typeof PainelIndexRouteImport
+      parentRoute: typeof PainelRoute
+    }
+    '/painel/suporte': {
+      id: '/painel/suporte'
+      path: '/suporte'
+      fullPath: '/painel/suporte'
+      preLoaderRoute: typeof PainelSuporteRouteImport
+      parentRoute: typeof PainelRoute
+    }
+    '/painel/praticantes': {
+      id: '/painel/praticantes'
+      path: '/praticantes'
+      fullPath: '/painel/praticantes'
+      preLoaderRoute: typeof PainelPraticantesRouteImport
+      parentRoute: typeof PainelRoute
+    }
+    '/painel/creditos': {
+      id: '/painel/creditos'
+      path: '/creditos'
+      fullPath: '/painel/creditos'
+      preLoaderRoute: typeof PainelCreditosRouteImport
+      parentRoute: typeof PainelRoute
+    }
+    '/painel/configuracoes': {
+      id: '/painel/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/painel/configuracoes'
+      preLoaderRoute: typeof PainelConfiguracoesRouteImport
+      parentRoute: typeof PainelRoute
+    }
     '/p/$id': {
       id: '/p/$id'
       path: '/p/$id'
@@ -212,13 +362,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/painel/praticantes/novo': {
+      id: '/painel/praticantes/novo'
+      path: '/novo'
+      fullPath: '/painel/praticantes/novo'
+      preLoaderRoute: typeof PainelPraticantesNovoRouteImport
+      parentRoute: typeof PainelPraticantesRoute
+    }
+    '/painel/conquistas/nova': {
+      id: '/painel/conquistas/nova'
+      path: '/conquistas/nova'
+      fullPath: '/painel/conquistas/nova'
+      preLoaderRoute: typeof PainelConquistasNovaRouteImport
+      parentRoute: typeof PainelRoute
+    }
+    '/painel/praticantes/$id/editar': {
+      id: '/painel/praticantes/$id/editar'
+      path: '/$id/editar'
+      fullPath: '/painel/praticantes/$id/editar'
+      preLoaderRoute: typeof PainelPraticantesIdEditarRouteImport
+      parentRoute: typeof PainelPraticantesRoute
+    }
   }
 }
+
+interface PainelPraticantesRouteChildren {
+  PainelPraticantesNovoRoute: typeof PainelPraticantesNovoRoute
+  PainelPraticantesIdEditarRoute: typeof PainelPraticantesIdEditarRoute
+}
+
+const PainelPraticantesRouteChildren: PainelPraticantesRouteChildren = {
+  PainelPraticantesNovoRoute: PainelPraticantesNovoRoute,
+  PainelPraticantesIdEditarRoute: PainelPraticantesIdEditarRoute,
+}
+
+const PainelPraticantesRouteWithChildren =
+  PainelPraticantesRoute._addFileChildren(PainelPraticantesRouteChildren)
+
+interface PainelRouteChildren {
+  PainelConfiguracoesRoute: typeof PainelConfiguracoesRoute
+  PainelCreditosRoute: typeof PainelCreditosRoute
+  PainelPraticantesRoute: typeof PainelPraticantesRouteWithChildren
+  PainelSuporteRoute: typeof PainelSuporteRoute
+  PainelIndexRoute: typeof PainelIndexRoute
+  PainelConquistasNovaRoute: typeof PainelConquistasNovaRoute
+}
+
+const PainelRouteChildren: PainelRouteChildren = {
+  PainelConfiguracoesRoute: PainelConfiguracoesRoute,
+  PainelCreditosRoute: PainelCreditosRoute,
+  PainelPraticantesRoute: PainelPraticantesRouteWithChildren,
+  PainelSuporteRoute: PainelSuporteRoute,
+  PainelIndexRoute: PainelIndexRoute,
+  PainelConquistasNovaRoute: PainelConquistasNovaRoute,
+}
+
+const PainelRouteWithChildren =
+  PainelRoute._addFileChildren(PainelRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   ContatoRoute: ContatoRoute,
+  PainelRoute: PainelRouteWithChildren,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   SobreRoute: SobreRoute,
