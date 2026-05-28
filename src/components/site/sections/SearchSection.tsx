@@ -86,6 +86,7 @@ export function SearchSection() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder={t("search.placeholder")}
+              aria-label={t("search.ariaLabel")}
               className="pl-9 h-11"
             />
           </div>
