@@ -12,6 +12,15 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Vercel Build Output API v3: all paths relative to project root
+  nitro: {
+    preset: "vercel",
+    output: {
+      dir: ".vercel/output",
+      serverDir: ".vercel/output/functions/__server.func",
+      publicDir: ".vercel/output/static",
+    },
+  },
   vite: {
     // IPv6 (::) is not available in all environments; force IPv4
     server: { host: "0.0.0.0", port: 3000 },
