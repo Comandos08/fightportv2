@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { db } from "@/lib/db";
 import { BeltBadge } from "@/components/BeltBadge";
 
 type Row = {
@@ -32,14 +32,15 @@ export function SearchSection() {
     try {
       const term = `%${q.trim()}%`;
       // Try the public search view first; fall back to people_public + person_schools.
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("people_public")
         .select("fp_id, full_name")
         .or(`full_name.ilike.${term},fp_id.ilike.${term}`)
         .limit(200);
       if (error) throw error;
-      const ids = (data ?? []).map((p: any) => p.fp_id as string);
-      let merged: Row[] = (data ?? []).map((p: any) => ({
+      const people = (data ?? []) as Array<{ fp_id: string; full_name: string }>;
+      const ids = people.map((p) => p.fp_id);
+      let merged: Row[] = people.map((p) => ({
         fp_id: p.fp_id,
         full_name: p.full_name,
         school_name: null,
@@ -47,15 +48,15 @@ export function SearchSection() {
         current_belt: null,
       }));
       if (ids.length) {
-        const { data: links } = await supabase
+        const { data: links } = await db
           .from("person_schools_public")
           .select("fp_id, school_name, martial_art, current_belt")
           .in("fp_id", ids);
-        if (links?.length) {
-          merged = links.map((l: any) => ({
+        const linkRows = (links ?? []) as Array<{ fp_id: string; school_name: string | null; martial_art: string | null; current_belt: string | null }>;
+        if (linkRows.length) {
+          merged = linkRows.map((l) => ({
             fp_id: l.fp_id,
-            full_name:
-              (data ?? []).find((p: any) => p.fp_id === l.fp_id)?.full_name ?? l.fp_id,
+            full_name: people.find((p) => p.fp_id === l.fp_id)?.full_name ?? l.fp_id,
             school_name: l.school_name,
             martial_art: l.martial_art,
             current_belt: l.current_belt,
