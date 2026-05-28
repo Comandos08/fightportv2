@@ -1,0 +1,20 @@
+# FightPort
+
+> Passaporte digital de graduações em artes marciais. Certificação esportiva imutável para academias e federações. Registre graduações, gere passaportes públicos verificáveis e carteirinhas digitais.
+
+FightPort é uma plataforma brasileira de certificação esportiva para organizações de artes marciais — academias, federações e associações. Cada graduação registrada vira um certificado verificável publicamente, acessível via QR Code e link permanente. A plataforma oferece planos de assinatura com créditos de graduação, gestão de praticantes, modelos de faixas personalizáveis e auditoria completa de ações administrativas.
+
+## Pages
+
+- [Home](/): Landing page com proposta de valor, estatísticas, como funciona, busca pública de atletas e planos de assinatura.
+- [Sobre](/sobre): História, missão e visão da plataforma FightPort.
+- [Contato](/contato): Formulário para envio de mensagens à equipe de suporte.
+- [Termos de Uso](/termos): Termos e condições de uso da plataforma.
+- [Política de Privacidade](/privacidade): Política de privacidade e proteção de dados.
+- [Cadastro](/cadastro): Página de cadastro e login de organizações e atletas.
+- [Recuperar Senha](/recuperar-senha): Fluxo de recuperação de acesso à conta.
+- [Passaporte Público](/p/FP123456): Exemplo de passaporte digital verificado de um atleta, com graduações, foto e QR Code.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Sitemap XML com rotas públicas indexáveis.
