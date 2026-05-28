@@ -10,6 +10,7 @@ export const Route = createFileRoute("/sobre")({
       { title: "Sobre — FightPort" },
       { name: "description", content: "Conheça o FightPort, a plataforma de certificação esportiva da SportCombat." },
       { property: "og:title", content: "Sobre — FightPort" },
+      { property: "og:description", content: "Descubra como o FightPort transforma graduações em certificados verificáveis e imutáveis." },
       { property: "og:url", content: "/sobre" },
     ],
     links: [{ rel: "canonical", href: "/sobre" }],

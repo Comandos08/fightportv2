@@ -24,6 +24,7 @@ export const Route = createFileRoute("/cadastro")({
       { title: "Cadastre sua organização — FightPort" },
       { name: "description", content: "Crie sua conta no FightPort e comece a emitir graduações verificáveis." },
       { property: "og:title", content: "Cadastre sua organização — FightPort" },
+      { property: "og:description", content: "Cadastre sua academia ou federação no FightPort e comece a emitir graduações verificáveis." },
       { property: "og:url", content: "/cadastro" },
     ],
     links: [{ rel: "canonical", href: "/cadastro" }],

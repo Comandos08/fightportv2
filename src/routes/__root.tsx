@@ -77,7 +77,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "FightPort — Certificação esportiva" },
       { name: "description", content: "Plataforma de certificação esportiva da SportCombat. Cada graduação registrada vira um certificado verificável publicamente." },
       { name: "author", content: "SportCombat" },
-      { property: "og:title", content: "FightPort" },
+      { property: "og:title", content: "FightPort — Passaporte Digital" },
       { property: "og:description", content: "Passaporte digital imutável de graduações em artes marciais." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "FightPort" },

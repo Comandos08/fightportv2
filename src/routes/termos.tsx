@@ -9,6 +9,8 @@ export const Route = createFileRoute("/termos")({
     meta: [
       { title: "Termos de uso — FightPort" },
       { name: "description", content: "Leia os termos de uso da plataforma FightPort. Ao usar o sistema de certificação esportiva, você concorda com estas condições." },
+      { property: "og:title", content: "Termos de uso — FightPort" },
+      { property: "og:description", content: "Conheça as regras de uso do FightPort e os direitos de atletas e organizações na plataforma." },
       { property: "og:url", content: "/termos" },
     ],
     links: [{ rel: "canonical", href: "/termos" }],

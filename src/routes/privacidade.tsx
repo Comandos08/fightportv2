@@ -9,6 +9,8 @@ export const Route = createFileRoute("/privacidade")({
     meta: [
       { title: "Privacidade & LGPD — FightPort" },
       { name: "description", content: "Política de privacidade e tratamento de dados em conformidade com a LGPD." },
+      { property: "og:title", content: "Privacidade & LGPD — FightPort" },
+      { property: "og:description", content: "Saiba como o FightPort protege seus dados pessoais e respeita a LGPD." },
       { property: "og:url", content: "/privacidade" },
     ],
     links: [{ rel: "canonical", href: "/privacidade" }],

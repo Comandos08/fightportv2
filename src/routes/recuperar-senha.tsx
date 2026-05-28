@@ -13,7 +13,11 @@ export const Route = createFileRoute("/recuperar-senha")({
     meta: [
       { title: "Definir nova senha — FightPort" },
       { name: "description", content: "Defina uma nova senha para sua conta FightPort." },
+      { property: "og:title", content: "Definir nova senha — FightPort" },
+      { property: "og:description", content: "Redefina sua senha do FightPort de forma segura." },
+      { property: "og:url", content: "/recuperar-senha" },
     ],
+    links: [{ rel: "canonical", href: "/recuperar-senha" }],
   }),
   component: ResetPage,
 });
