@@ -1,13 +1,12 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute, Outlet, redirect, notFound } from "@tanstack/react-router";
 import { AthleteLayout } from "@/components/athlete/AthleteLayout";
+import { getCurrentRole } from "@/lib/role";
 
 export const Route = createFileRoute("/minha-conta")({
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      throw redirect({ to: "/cadastro" });
-    }
+    const { userId, role } = await getCurrentRole();
+    if (!userId) throw redirect({ to: "/cadastro" });
+    if (role !== "athlete") throw notFound();
   },
   component: AthleteLayoutRoute,
 });
