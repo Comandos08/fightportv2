@@ -14,7 +14,7 @@ import { FooterSection } from "@/components/site/Footer";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "FightPort — Passaporte digital de graduações em artes marciais" },
+      { title: "FightPort — Passaporte digital de graduações" },
       { name: "description", content: "Certificação esportiva imutável para academias e federações. Registre graduações, gere passaportes públicos verificáveis e carteirinhas digitais." },
       { property: "og:title", content: "FightPort — Passaporte digital de graduações" },
       { property: "og:description", content: "Cada faixa registrada vira um certificado verificável publicamente." },
