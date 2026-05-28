@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
+import { getCurrentRole, targetForRole } from "@/lib/role";
 import { useState } from "react";
 import { Eye, EyeOff, ArrowRight, Shield, MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,10 @@ export const Route = createFileRoute("/cadastro")({
     ],
     links: [{ rel: "canonical", href: "/cadastro" }],
   }),
+  beforeLoad: async () => {
+    const { userId, role } = await getCurrentRole();
+    if (userId && role) throw redirect({ to: targetForRole(role) });
+  },
   component: CadastroPage,
 });
 

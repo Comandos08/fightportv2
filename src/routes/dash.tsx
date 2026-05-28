@@ -1,11 +1,12 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute, Outlet, redirect, notFound } from "@tanstack/react-router";
 import { DashLayout } from "@/components/dash/DashLayout";
+import { getCurrentRole } from "@/lib/role";
 
 export const Route = createFileRoute("/dash")({
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) throw redirect({ to: "/cadastro" });
+    const { userId, isAdmin } = await getCurrentRole();
+    if (!userId) throw redirect({ to: "/cadastro" });
+    if (!isAdmin) throw notFound();
   },
   component: DashRoute,
 });
