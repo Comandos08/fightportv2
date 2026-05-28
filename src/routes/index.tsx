@@ -1,29 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Navbar } from "@/components/site/Navbar";
+import { HeroSection } from "@/components/site/sections/HeroSection";
+import { SocialProof } from "@/components/site/sections/SocialProof";
+import { ProblemSection } from "@/components/site/sections/ProblemSection";
+import { SolutionSection } from "@/components/site/sections/SolutionSection";
+import { HowItWorks } from "@/components/site/sections/HowItWorks";
+import { SearchSection } from "@/components/site/sections/SearchSection";
+import { PricingSection } from "@/components/site/sections/PricingSection";
+import { TestimonialsSection } from "@/components/site/sections/TestimonialsSection";
+import { CtaSection } from "@/components/site/sections/CtaSection";
+import { FooterSection } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "FightPort — Passaporte digital de graduações em artes marciais" },
+      { name: "description", content: "Certificação esportiva imutável para academias e federações. Registre graduações, gere passaportes públicos verificáveis e carteirinhas digitais." },
+      { property: "og:title", content: "FightPort — Passaporte digital de graduações" },
+      { property: "og:description", content: "Cada faixa registrada vira um certificado verificável publicamente." },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
-  component: Index,
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function HomePage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <Navbar />
+      <main className="flex-1">
+        <HeroSection />
+        <SocialProof />
+        <ProblemSection />
+        <SolutionSection />
+        <HowItWorks />
+        <SearchSection />
+        <PricingSection />
+        <TestimonialsSection />
+        <CtaSection />
+      </main>
+      <FooterSection />
     </div>
   );
 }
