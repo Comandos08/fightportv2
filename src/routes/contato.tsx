@@ -17,6 +17,7 @@ export const Route = createFileRoute("/contato")({
       { title: "Contato — FightPort" },
       { name: "description", content: "Entre em contato com a equipe FightPort. Envie sua dúvida, sugestão ou solicitação de suporte pelo formulário." },
       { property: "og:title", content: "Contato — FightPort" },
+      { property: "og:description", content: "Fale com a equipe FightPort. Dúvidas, sugestões e suporte via formulário de contato." },
       { property: "og:url", content: "/contato" },
     ],
     links: [{ rel: "canonical", href: "/contato" }],
