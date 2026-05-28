@@ -1,13 +1,12 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
+import { createFileRoute, Outlet, redirect, notFound } from "@tanstack/react-router";
 import { PanelLayout } from "@/components/panel/PanelLayout";
+import { getCurrentRole } from "@/lib/role";
 
 export const Route = createFileRoute("/painel")({
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (!data.user) {
-      throw redirect({ to: "/cadastro" });
-    }
+    const { userId, role } = await getCurrentRole();
+    if (!userId) throw redirect({ to: "/cadastro" });
+    if (role !== "school") throw notFound();
   },
   component: PanelLayoutRoute,
 });
