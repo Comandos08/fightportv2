@@ -226,22 +226,10 @@ function LoginForm({ onForgot }: { onForgot: () => void }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      const userId = data.user?.id;
-      let target = "/";
-      if (userId) {
-        const { data: roleRow } = await db
-          .from("user_roles")
-          .select("role")
-          .eq("auth_id", userId)
-          .maybeSingle();
-        const role = (roleRow as { role?: string } | null)?.role;
-        if (role === "admin") target = "/dash";
-        else if (role === "school") target = "/painel";
-        else if (role === "athlete") target = "/minha-conta";
-      }
-      navigate({ to: target });
+      const { role } = await getCurrentRole();
+      navigate({ to: targetForRole(role) });
     } catch (err) {
       toast.error((err as Error).message);
     } finally {

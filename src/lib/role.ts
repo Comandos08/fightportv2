@@ -24,7 +24,7 @@ export async function getCurrentRole(): Promise<{ userId: string | null; role: A
 
 export function targetForRole(role: AppRole): string {
   if (role === "admin") return "/dash";
-  if (role === "school") return "/painel";
+  if (role === "school") return "/painel/praticantes";
   if (role === "athlete") return "/minha-conta";
-  return "/";
+  return "/painel/praticantes";
 }
