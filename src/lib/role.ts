@@ -8,15 +8,30 @@ export async function getCurrentRole(): Promise<{ userId: string | null; role: A
   const userId = data.user?.id ?? null;
   if (!userId) return { userId: null, role: null, isAdmin: false };
   try {
-    const { data: row } = await db
+    // Step 1: get the primary role from user_roles
+    const { data: roleRow } = await db
       .from("user_roles")
-      .select("role, is_admin")
+      .select("role")
       .eq("auth_id", userId)
       .maybeSingle();
-    const r = row as { role?: string; is_admin?: boolean } | null;
-    const isAdmin = !!r?.is_admin;
-    const role = (isAdmin ? "admin" : (r?.role as AppRole)) ?? null;
-    return { userId, role, isAdmin };
+    const role = ((roleRow as { role?: string } | null)?.role as AppRole) ?? null;
+
+    // athlete and direct admin roles need no further check
+    if (role === "athlete") return { userId, role: "athlete", isAdmin: false };
+    if (role === "admin") return { userId, role: "admin", isAdmin: true };
+
+    // school users: check schools.is_admin to decide if they're the platform admin
+    if (role === "school") {
+      const { data: school } = await db
+        .from("schools")
+        .select("is_admin")
+        .eq("id", userId)
+        .maybeSingle();
+      const isAdmin = !!(school as { is_admin?: boolean } | null)?.is_admin;
+      return { userId, role: isAdmin ? "admin" : "school", isAdmin };
+    }
+
+    return { userId, role: null, isAdmin: false };
   } catch {
     return { userId, role: null, isAdmin: false };
   }
