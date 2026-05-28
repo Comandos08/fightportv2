@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerificarRouteImport } from './routes/verificar'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PainelRouteImport } from './routes/painel'
@@ -57,6 +58,11 @@ const TermosRoute = TermosRouteImport.update({
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
@@ -259,6 +266,7 @@ export interface FileRoutesByTo {
   '/minha-conta': typeof MinhaContaRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/verificar'
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/minha-conta'
     | '/privacidade'
     | '/recuperar-senha'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/verificar'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/verificar'
@@ -441,6 +453,7 @@ export interface RootRouteChildren {
   PainelRoute: typeof PainelRouteWithChildren
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   VerificarRoute: typeof VerificarRoute
@@ -468,6 +481,13 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recuperar-senha': {
@@ -798,6 +818,7 @@ const rootRouteChildren: RootRouteChildren = {
   PainelRoute: PainelRouteWithChildren,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   VerificarRoute: VerificarRoute,
