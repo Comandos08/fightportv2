@@ -40,24 +40,29 @@ function DashOverview() {
       const { from, to } = periodToDates(period);
       try {
         const o = await db.rpc("admin_get_overview", { p_from: from, p_to: to });
+        if (o.error) throw o.error;
         setOverview(o.data ?? null);
-      } catch { /* ignore */ }
+      } catch (e) { console.error("[dash] admin_get_overview:", e); }
       try {
         const g = await db.rpc("admin_growth_monthly");
+        if (g.error) throw g.error;
         setGrowth(Array.isArray(g.data) ? g.data : []);
-      } catch { /* ignore */ }
+      } catch (e) { console.error("[dash] admin_growth_monthly:", e); }
       try {
         const r = await db.rpc("admin_revenue_monthly");
+        if (r.error) throw r.error;
         setRevenue(Array.isArray(r.data) ? r.data : []);
-      } catch { /* ignore */ }
+      } catch (e) { console.error("[dash] admin_revenue_monthly:", e); }
       try {
         const rs = await db.rpc("admin_recent_schools");
+        if (rs.error) throw rs.error;
         setRecent(Array.isArray(rs.data) ? rs.data : []);
-      } catch { /* ignore */ }
+      } catch (e) { console.error("[dash] admin_recent_schools:", e); }
       try {
         const z = await db.rpc("admin_zero_balance_schools");
+        if (z.error) throw z.error;
         setZero(Array.isArray(z.data) ? z.data : []);
-      } catch { /* ignore */ }
+      } catch (e) { console.error("[dash] admin_zero_balance_schools:", e); }
     })();
   }, [period]);
 
@@ -65,9 +70,12 @@ function DashOverview() {
 
   const kpis = useMemo(() => {
     const o = overview ?? {};
+    // RPC returns: schools_total, schools_prev, people_total, people_prev, achievements_month, revenue_month
+    const schoolsDelta = o.schools_total != null && o.schools_prev != null ? o.schools_total - o.schools_prev : null;
+    const peopleDelta = o.people_total != null && o.people_prev != null ? o.people_total - o.people_prev : null;
     return [
-      { k: t("dash.kpi.orgs"), v: o.orgs_total ?? 0, d: o.orgs_delta != null ? `${o.orgs_delta > 0 ? "+" : ""}${o.orgs_delta} vs mês anterior` : undefined },
-      { k: t("dash.kpi.athletes"), v: o.athletes_total ?? 0, d: o.athletes_delta != null ? `${o.athletes_delta > 0 ? "+" : ""}${o.athletes_delta}` : undefined },
+      { k: t("dash.kpi.orgs"), v: o.schools_total ?? 0, d: schoolsDelta != null ? `${schoolsDelta > 0 ? "+" : ""}${schoolsDelta} vs mês anterior` : undefined },
+      { k: t("dash.kpi.athletes"), v: o.people_total ?? 0, d: peopleDelta != null ? `${peopleDelta > 0 ? "+" : ""}${peopleDelta}` : undefined },
       { k: t("dash.kpi.achievements"), v: o.achievements_month ?? 0 },
       { k: t("dash.kpi.revenue"), v: fmtBRL(o.revenue_month ?? 0) },
     ];
