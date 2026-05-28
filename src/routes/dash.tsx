@@ -4,6 +4,8 @@ import { getCurrentRole } from "@/lib/role";
 
 export const Route = createFileRoute("/dash")({
   beforeLoad: async () => {
+    // SSR has no session — skip auth check; client handles it on hydration
+    if (typeof window === 'undefined') return;
     const { userId, isAdmin } = await getCurrentRole();
     if (!userId) throw redirect({ to: "/cadastro" });
     if (!isAdmin) throw notFound();

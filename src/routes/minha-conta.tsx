@@ -4,6 +4,8 @@ import { getCurrentRole } from "@/lib/role";
 
 export const Route = createFileRoute("/minha-conta")({
   beforeLoad: async () => {
+    // SSR has no session — skip auth check; client handles it on hydration
+    if (typeof window === 'undefined') return;
     const { userId, role } = await getCurrentRole();
     if (!userId) throw redirect({ to: "/cadastro" });
     if (role !== "athlete") throw notFound();
