@@ -132,13 +132,51 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
+/* FightPort design tokens */
+:root {
+  --fp-bg-soft: oklch(0.97 0.005 250);
+  --fp-accent: oklch(0.76 0.18 70);
+  --fp-accent-strong: oklch(0.68 0.2 65);
+  --color-bg-soft: var(--fp-bg-soft);
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  --belt-white: #ffffff;
+  --belt-grey: #9ca3af;
+  --belt-yellow: #fcd34d;
+  --belt-orange: #fb923c;
+  --belt-green: #16a34a;
+  --belt-blue: #2563eb;
+  --belt-purple: #7c3aed;
+  --belt-brown: #78350f;
+  --belt-black: #0a0a0a;
+  --belt-coral: #f87171;
+  --belt-red: #dc2626;
+}
+.dark { --fp-bg-soft: oklch(0.22 0.02 260); }
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+.font-mono { font-family: var(--font-mono); }
+.fp-container { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1rem; }
+@media (min-width: 640px) { .fp-container { padding-inline: 1.5rem; } }
+@media (min-width: 1024px) { .fp-container { padding-inline: 2rem; } }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.85)} }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.animate-fadeup { animation: fadeUp .6s ease-out both; }
+.animate-float  { animation: floatY 4s ease-in-out infinite; }
+.animate-pulse-dot { animation: pulseDot 1.6s ease-in-out infinite; }
+.animate-marquee { animation: marquee 30s linear infinite; }
+.delay-0{animation-delay:0} .delay-100{animation-delay:.1s} .delay-200{animation-delay:.2s}
+.delay-300{animation-delay:.3s} .delay-400{animation-delay:.4s} .delay-500{animation-delay:.5s}
+@media (prefers-reduced-motion: reduce) {
+  .animate-fadeup,.animate-float,.animate-pulse-dot,.animate-marquee { animation: none !important; }
 }
