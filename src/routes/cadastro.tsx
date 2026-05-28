@@ -28,6 +28,10 @@ export const Route = createFileRoute("/cadastro")({
     ],
     links: [{ rel: "canonical", href: "/cadastro" }],
   }),
+  beforeLoad: async () => {
+    const { userId, role } = await getCurrentRole();
+    if (userId && role) throw redirect({ to: targetForRole(role) });
+  },
   component: CadastroPage,
 });
 
