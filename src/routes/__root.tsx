@@ -69,57 +69,28 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "FightPort",
-  url: "/",
-  description: "Plataforma de certificação esportiva da SportCombat.",
-  sameAs: [] as string[],
-};
-
-const websiteJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "FightPort",
-  url: "/",
-  publisher: {
-    "@type": "Organization",
-    name: "FightPort",
-  },
-};
-
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FightPort — Certificação esportiva" },
+      { title: "FightPort — Passaporte digital de graduações em artes marciais" },
       { name: "description", content: "Plataforma de certificação esportiva da SportCombat. Cada graduação registrada vira um certificado verificável publicamente." },
       { name: "author", content: "SportCombat" },
-      { property: "og:title", content: "FightPort — Passaporte Digital" },
-      { property: "og:description", content: "Passaporte digital imutável de graduações em artes marciais." },
+      { property: "og:title", content: "FightPort — Passaporte digital de graduações em artes marciais" },
+      { property: "og:description", content: "Plataforma de certificação esportiva da SportCombat. Cada graduação registrada vira um certificado verificável publicamente." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "FightPort" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "FightPort — Passaporte digital de graduações em artes marciais" },
+      { name: "twitter:description", content: "Plataforma de certificação esportiva da SportCombat. Cada graduação registrada vira um certificado verificável publicamente." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/21d893fa-cec0-4be8-9b9b-2b5c396f89fc/id-preview-6f2ad441--1e135de4-0de8-47d1-81b4-af4a42e952e0.lovable.app-1779980326754.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/21d893fa-cec0-4be8-9b9b-2b5c396f89fc/id-preview-6f2ad441--1e135de4-0de8-47d1-81b4-af4a42e952e0.lovable.app-1779980326754.png" },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" },
       {
         rel: "stylesheet",
         href: appCss,
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify(organizationJsonLd),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify(websiteJsonLd),
       },
     ],
   }),
