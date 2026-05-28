@@ -163,6 +163,12 @@ function PassportPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {personJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: personJsonLd }}
+        />
+      )}
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur">
         <div className="fp-container h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-semibold">
