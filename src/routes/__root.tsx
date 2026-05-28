@@ -74,14 +74,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "FightPort — Passaporte digital de graduações em artes marciais" },
+      { name: "description", content: "Plataforma de certificação esportiva da SportCombat. Cada graduação registrada vira um certificado verificável publicamente." },
+      { name: "author", content: "SportCombat" },
+      { property: "og:title", content: "FightPort" },
+      { property: "og:description", content: "Passaporte digital imutável de graduações em artes marciais." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:site_name", content: "FightPort" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -98,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -115,8 +115,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <Outlet />
+        <Toaster richColors position="top-right" />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
