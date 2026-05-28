@@ -98,6 +98,30 @@ function PassportPage() {
 
   const url = typeof window !== "undefined" ? window.location.href : `https://fightport.pro/p/${id}`;
 
+  const personJsonLd = person
+    ? JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: person.full_name,
+        image: person.photo_url ?? undefined,
+        url,
+        memberOf: links.map((l) => ({
+          "@type": "SportsActivityLocation",
+          name: l.school_name,
+          sport: l.martial_art,
+        })),
+        hasCredential: achievements.map((a) => ({
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: `Graduação ${a.belt} — ${a.martial_art}`,
+          recognizedBy: {
+            "@type": "Organization",
+            name: a.school_name ?? links.find((l) => l.school_id === a.school_id)?.school_name ?? "FightPort",
+          },
+          dateCreated: a.achievement_date,
+        })),
+      })
+    : null;
+
   function copyShare() {
     navigator.clipboard.writeText(url);
     toast.success(t("pass.shareCopied"));
@@ -139,6 +163,12 @@ function PassportPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {personJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: personJsonLd }}
+        />
+      )}
       <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur">
         <div className="fp-container h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-semibold">
