@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import Papa from "papaparse";
 import { db } from "@/lib/db";
+import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -34,6 +35,8 @@ function OrgsPage() {
     (async () => {
       setLoading(true);
       try {
+        const { data: { user } } = await supabase.auth.getUser();
+        console.log("[OrgsPage] Current user:", user?.id ?? "null (not authenticated)");
         const r = await db.rpc("admin_list_schools", {
           p_search: search || null,
           p_martial_art: art === "all" ? null : art,
@@ -43,11 +46,13 @@ function OrgsPage() {
           p_page: page,
           p_page_size: PAGE_SIZE,
         });
+        console.log("[OrgsPage] admin_list_schools result:", r.data, "error:", r.error);
         if (cancelled) return;
         const data = r.data ?? {};
         setRows(Array.isArray(data.rows) ? data.rows : Array.isArray(data) ? data : []);
         setTotal(Number(data.total ?? (Array.isArray(data) ? data.length : 0)));
-      } catch {
+      } catch (e) {
+        console.error("[OrgsPage] admin_list_schools threw:", e);
         if (!cancelled) { setRows([]); setTotal(0); }
       }
       if (!cancelled) setLoading(false);
