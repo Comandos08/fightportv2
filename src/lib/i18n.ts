@@ -226,6 +226,49 @@ const pt: Dict = {
   "panel.nav.settings": "Configurações",
   "panel.nav.logout": "Sair",
 
+  // Athlete portal — sidebar
+  "athlete.nav.profile": "Meu perfil",
+  "athlete.nav.graduations": "Minhas graduações",
+  "athlete.nav.card": "Minha carteirinha",
+  "athlete.nav.logout": "Sair",
+
+  // Athlete — profile
+  "athlete.profile.title": "Meu perfil",
+  "athlete.profile.photo": "Foto de perfil",
+  "athlete.profile.photo.upload": "Enviar foto",
+  "athlete.profile.photo.tooLarge": "Imagem muito grande (máx 5MB).",
+  "athlete.profile.photo.invalidType": "Formato inválido. Use JPG ou PNG.",
+  "athlete.profile.photo.uploaded": "Foto atualizada.",
+  "athlete.profile.field.firstName": "Nome",
+  "athlete.profile.field.lastName": "Sobrenome",
+  "athlete.profile.field.phone": "Telefone",
+  "athlete.profile.field.email": "E-mail",
+  "athlete.profile.field.cpf": "CPF",
+  "athlete.profile.field.birth": "Data de nascimento",
+  "athlete.profile.changeEmail": "Alterar e-mail",
+  "athlete.profile.changeEmail.sent": "Enviamos um link de confirmação para {email}",
+  "athlete.profile.locked": "Por segurança, este campo não pode ser alterado",
+  "athlete.profile.saved": "Perfil atualizado.",
+
+  // Athlete — graduations
+  "athlete.grad.title": "Minhas graduações",
+  "athlete.grad.viewPassport": "Ver meu passaporte público →",
+  "athlete.grad.empty": "Nenhuma graduação registrada ainda.",
+  "athlete.grad.col.date": "Data",
+  "athlete.grad.col.belt": "Faixa",
+  "athlete.grad.col.by": "Graduado por",
+  "athlete.grad.col.hash": "Hash",
+  "athlete.grad.copyHash": "Copiar hash",
+  "athlete.grad.hashCopied": "Hash copiado.",
+
+  // Athlete — card
+  "athlete.card.title": "Minha carteirinha",
+  "athlete.card.selectModality": "Selecione a modalidade",
+  "athlete.card.issuedOn": "Emitida em {date}",
+  "athlete.card.download": "Baixar carteirinha",
+  "athlete.card.instruction": "Apresente esta carteirinha onde precisar. O QR Code leva ao seu passaporte completo.",
+  "athlete.card.empty": "Você ainda não está vinculado a nenhuma organização.",
+
   // Painel — dashboard
   "dash.kpi.practitioners": "Total praticantes",
   "dash.kpi.certificates": "Certificados emitidos",
