@@ -16,10 +16,12 @@ import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PainelRouteImport } from './routes/painel'
 import { Route as MinhaContaRouteImport } from './routes/minha-conta'
+import { Route as DashRouteImport } from './routes/dash'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PainelIndexRouteImport } from './routes/painel.index'
+import { Route as DashIndexRouteImport } from './routes/dash.index'
 import { Route as PainelSuporteRouteImport } from './routes/painel.suporte'
 import { Route as PainelPraticantesRouteImport } from './routes/painel.praticantes'
 import { Route as PainelCreditosRouteImport } from './routes/painel.creditos'
@@ -28,8 +30,18 @@ import { Route as PIdRouteImport } from './routes/p.$id'
 import { Route as MinhaContaPerfilRouteImport } from './routes/minha-conta.perfil'
 import { Route as MinhaContaGraduacoesRouteImport } from './routes/minha-conta.graduacoes'
 import { Route as MinhaContaCarteirinhaRouteImport } from './routes/minha-conta.carteirinha'
+import { Route as DashSuporteRouteImport } from './routes/dash.suporte'
+import { Route as DashOrganizacoesRouteImport } from './routes/dash.organizacoes'
+import { Route as DashModelosRouteImport } from './routes/dash.modelos'
+import { Route as DashGraduacoesRouteImport } from './routes/dash.graduacoes'
+import { Route as DashFinanceiroRouteImport } from './routes/dash.financeiro'
+import { Route as DashContatosRouteImport } from './routes/dash.contatos'
+import { Route as DashAuditoriaRouteImport } from './routes/dash.auditoria'
+import { Route as DashAtletasRouteImport } from './routes/dash.atletas'
 import { Route as PainelPraticantesNovoRouteImport } from './routes/painel.praticantes.novo'
 import { Route as PainelConquistasNovaRouteImport } from './routes/painel.conquistas.nova'
+import { Route as DashOrganizacoesIdRouteImport } from './routes/dash.organizacoes.$id'
+import { Route as DashAtletasIdRouteImport } from './routes/dash.atletas.$id'
 import { Route as PainelPraticantesIdEditarRouteImport } from './routes/painel.praticantes.$id.editar'
 
 const VerificarRoute = VerificarRouteImport.update({
@@ -67,6 +79,11 @@ const MinhaContaRoute = MinhaContaRouteImport.update({
   path: '/minha-conta',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashRoute = DashRouteImport.update({
+  id: '/dash',
+  path: '/dash',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContatoRoute = ContatoRouteImport.update({
   id: '/contato',
   path: '/contato',
@@ -86,6 +103,11 @@ const PainelIndexRoute = PainelIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PainelRoute,
+} as any)
+const DashIndexRoute = DashIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashRoute,
 } as any)
 const PainelSuporteRoute = PainelSuporteRouteImport.update({
   id: '/suporte',
@@ -127,6 +149,46 @@ const MinhaContaCarteirinhaRoute = MinhaContaCarteirinhaRouteImport.update({
   path: '/carteirinha',
   getParentRoute: () => MinhaContaRoute,
 } as any)
+const DashSuporteRoute = DashSuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashOrganizacoesRoute = DashOrganizacoesRouteImport.update({
+  id: '/organizacoes',
+  path: '/organizacoes',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashModelosRoute = DashModelosRouteImport.update({
+  id: '/modelos',
+  path: '/modelos',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashGraduacoesRoute = DashGraduacoesRouteImport.update({
+  id: '/graduacoes',
+  path: '/graduacoes',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashFinanceiroRoute = DashFinanceiroRouteImport.update({
+  id: '/financeiro',
+  path: '/financeiro',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashContatosRoute = DashContatosRouteImport.update({
+  id: '/contatos',
+  path: '/contatos',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashAuditoriaRoute = DashAuditoriaRouteImport.update({
+  id: '/auditoria',
+  path: '/auditoria',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashAtletasRoute = DashAtletasRouteImport.update({
+  id: '/atletas',
+  path: '/atletas',
+  getParentRoute: () => DashRoute,
+} as any)
 const PainelPraticantesNovoRoute = PainelPraticantesNovoRouteImport.update({
   id: '/novo',
   path: '/novo',
@@ -136,6 +198,16 @@ const PainelConquistasNovaRoute = PainelConquistasNovaRouteImport.update({
   id: '/conquistas/nova',
   path: '/conquistas/nova',
   getParentRoute: () => PainelRoute,
+} as any)
+const DashOrganizacoesIdRoute = DashOrganizacoesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => DashOrganizacoesRoute,
+} as any)
+const DashAtletasIdRoute = DashAtletasIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => DashAtletasRoute,
 } as any)
 const PainelPraticantesIdEditarRoute =
   PainelPraticantesIdEditarRouteImport.update({
@@ -148,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/dash': typeof DashRouteWithChildren
   '/minha-conta': typeof MinhaContaRouteWithChildren
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
@@ -155,6 +228,14 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/dash/atletas': typeof DashAtletasRouteWithChildren
+  '/dash/auditoria': typeof DashAuditoriaRoute
+  '/dash/contatos': typeof DashContatosRoute
+  '/dash/financeiro': typeof DashFinanceiroRoute
+  '/dash/graduacoes': typeof DashGraduacoesRoute
+  '/dash/modelos': typeof DashModelosRoute
+  '/dash/organizacoes': typeof DashOrganizacoesRouteWithChildren
+  '/dash/suporte': typeof DashSuporteRoute
   '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
   '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
   '/minha-conta/perfil': typeof MinhaContaPerfilRoute
@@ -163,7 +244,10 @@ export interface FileRoutesByFullPath {
   '/painel/creditos': typeof PainelCreditosRoute
   '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
   '/painel/suporte': typeof PainelSuporteRoute
+  '/dash/': typeof DashIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/dash/atletas/$id': typeof DashAtletasIdRoute
+  '/dash/organizacoes/$id': typeof DashOrganizacoesIdRoute
   '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
   '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
   '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
@@ -178,6 +262,14 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/dash/atletas': typeof DashAtletasRouteWithChildren
+  '/dash/auditoria': typeof DashAuditoriaRoute
+  '/dash/contatos': typeof DashContatosRoute
+  '/dash/financeiro': typeof DashFinanceiroRoute
+  '/dash/graduacoes': typeof DashGraduacoesRoute
+  '/dash/modelos': typeof DashModelosRoute
+  '/dash/organizacoes': typeof DashOrganizacoesRouteWithChildren
+  '/dash/suporte': typeof DashSuporteRoute
   '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
   '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
   '/minha-conta/perfil': typeof MinhaContaPerfilRoute
@@ -186,7 +278,10 @@ export interface FileRoutesByTo {
   '/painel/creditos': typeof PainelCreditosRoute
   '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
   '/painel/suporte': typeof PainelSuporteRoute
+  '/dash': typeof DashIndexRoute
   '/painel': typeof PainelIndexRoute
+  '/dash/atletas/$id': typeof DashAtletasIdRoute
+  '/dash/organizacoes/$id': typeof DashOrganizacoesIdRoute
   '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
   '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
   '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
@@ -196,6 +291,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/dash': typeof DashRouteWithChildren
   '/minha-conta': typeof MinhaContaRouteWithChildren
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
@@ -203,6 +299,14 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/dash/atletas': typeof DashAtletasRouteWithChildren
+  '/dash/auditoria': typeof DashAuditoriaRoute
+  '/dash/contatos': typeof DashContatosRoute
+  '/dash/financeiro': typeof DashFinanceiroRoute
+  '/dash/graduacoes': typeof DashGraduacoesRoute
+  '/dash/modelos': typeof DashModelosRoute
+  '/dash/organizacoes': typeof DashOrganizacoesRouteWithChildren
+  '/dash/suporte': typeof DashSuporteRoute
   '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
   '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
   '/minha-conta/perfil': typeof MinhaContaPerfilRoute
@@ -211,7 +315,10 @@ export interface FileRoutesById {
   '/painel/creditos': typeof PainelCreditosRoute
   '/painel/praticantes': typeof PainelPraticantesRouteWithChildren
   '/painel/suporte': typeof PainelSuporteRoute
+  '/dash/': typeof DashIndexRoute
   '/painel/': typeof PainelIndexRoute
+  '/dash/atletas/$id': typeof DashAtletasIdRoute
+  '/dash/organizacoes/$id': typeof DashOrganizacoesIdRoute
   '/painel/conquistas/nova': typeof PainelConquistasNovaRoute
   '/painel/praticantes/novo': typeof PainelPraticantesNovoRoute
   '/painel/praticantes/$id/editar': typeof PainelPraticantesIdEditarRoute
@@ -222,6 +329,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/dash'
     | '/minha-conta'
     | '/painel'
     | '/privacidade'
@@ -229,6 +337,14 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/dash/atletas'
+    | '/dash/auditoria'
+    | '/dash/contatos'
+    | '/dash/financeiro'
+    | '/dash/graduacoes'
+    | '/dash/modelos'
+    | '/dash/organizacoes'
+    | '/dash/suporte'
     | '/minha-conta/carteirinha'
     | '/minha-conta/graduacoes'
     | '/minha-conta/perfil'
@@ -237,7 +353,10 @@ export interface FileRouteTypes {
     | '/painel/creditos'
     | '/painel/praticantes'
     | '/painel/suporte'
+    | '/dash/'
     | '/painel/'
+    | '/dash/atletas/$id'
+    | '/dash/organizacoes/$id'
     | '/painel/conquistas/nova'
     | '/painel/praticantes/novo'
     | '/painel/praticantes/$id/editar'
@@ -252,6 +371,14 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/dash/atletas'
+    | '/dash/auditoria'
+    | '/dash/contatos'
+    | '/dash/financeiro'
+    | '/dash/graduacoes'
+    | '/dash/modelos'
+    | '/dash/organizacoes'
+    | '/dash/suporte'
     | '/minha-conta/carteirinha'
     | '/minha-conta/graduacoes'
     | '/minha-conta/perfil'
@@ -260,7 +387,10 @@ export interface FileRouteTypes {
     | '/painel/creditos'
     | '/painel/praticantes'
     | '/painel/suporte'
+    | '/dash'
     | '/painel'
+    | '/dash/atletas/$id'
+    | '/dash/organizacoes/$id'
     | '/painel/conquistas/nova'
     | '/painel/praticantes/novo'
     | '/painel/praticantes/$id/editar'
@@ -269,6 +399,7 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/dash'
     | '/minha-conta'
     | '/painel'
     | '/privacidade'
@@ -276,6 +407,14 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/dash/atletas'
+    | '/dash/auditoria'
+    | '/dash/contatos'
+    | '/dash/financeiro'
+    | '/dash/graduacoes'
+    | '/dash/modelos'
+    | '/dash/organizacoes'
+    | '/dash/suporte'
     | '/minha-conta/carteirinha'
     | '/minha-conta/graduacoes'
     | '/minha-conta/perfil'
@@ -284,7 +423,10 @@ export interface FileRouteTypes {
     | '/painel/creditos'
     | '/painel/praticantes'
     | '/painel/suporte'
+    | '/dash/'
     | '/painel/'
+    | '/dash/atletas/$id'
+    | '/dash/organizacoes/$id'
     | '/painel/conquistas/nova'
     | '/painel/praticantes/novo'
     | '/painel/praticantes/$id/editar'
@@ -294,6 +436,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
   ContatoRoute: typeof ContatoRoute
+  DashRoute: typeof DashRouteWithChildren
   MinhaContaRoute: typeof MinhaContaRouteWithChildren
   PainelRoute: typeof PainelRouteWithChildren
   PrivacidadeRoute: typeof PrivacidadeRoute
@@ -355,6 +498,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinhaContaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dash': {
+      id: '/dash'
+      path: '/dash'
+      fullPath: '/dash'
+      preLoaderRoute: typeof DashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contato': {
       id: '/contato'
       path: '/contato'
@@ -382,6 +532,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/painel/'
       preLoaderRoute: typeof PainelIndexRouteImport
       parentRoute: typeof PainelRoute
+    }
+    '/dash/': {
+      id: '/dash/'
+      path: '/'
+      fullPath: '/dash/'
+      preLoaderRoute: typeof DashIndexRouteImport
+      parentRoute: typeof DashRoute
     }
     '/painel/suporte': {
       id: '/painel/suporte'
@@ -439,6 +596,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MinhaContaCarteirinhaRouteImport
       parentRoute: typeof MinhaContaRoute
     }
+    '/dash/suporte': {
+      id: '/dash/suporte'
+      path: '/suporte'
+      fullPath: '/dash/suporte'
+      preLoaderRoute: typeof DashSuporteRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/organizacoes': {
+      id: '/dash/organizacoes'
+      path: '/organizacoes'
+      fullPath: '/dash/organizacoes'
+      preLoaderRoute: typeof DashOrganizacoesRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/modelos': {
+      id: '/dash/modelos'
+      path: '/modelos'
+      fullPath: '/dash/modelos'
+      preLoaderRoute: typeof DashModelosRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/graduacoes': {
+      id: '/dash/graduacoes'
+      path: '/graduacoes'
+      fullPath: '/dash/graduacoes'
+      preLoaderRoute: typeof DashGraduacoesRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/financeiro': {
+      id: '/dash/financeiro'
+      path: '/financeiro'
+      fullPath: '/dash/financeiro'
+      preLoaderRoute: typeof DashFinanceiroRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/contatos': {
+      id: '/dash/contatos'
+      path: '/contatos'
+      fullPath: '/dash/contatos'
+      preLoaderRoute: typeof DashContatosRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/auditoria': {
+      id: '/dash/auditoria'
+      path: '/auditoria'
+      fullPath: '/dash/auditoria'
+      preLoaderRoute: typeof DashAuditoriaRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/dash/atletas': {
+      id: '/dash/atletas'
+      path: '/atletas'
+      fullPath: '/dash/atletas'
+      preLoaderRoute: typeof DashAtletasRouteImport
+      parentRoute: typeof DashRoute
+    }
     '/painel/praticantes/novo': {
       id: '/painel/praticantes/novo'
       path: '/novo'
@@ -453,6 +666,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelConquistasNovaRouteImport
       parentRoute: typeof PainelRoute
     }
+    '/dash/organizacoes/$id': {
+      id: '/dash/organizacoes/$id'
+      path: '/$id'
+      fullPath: '/dash/organizacoes/$id'
+      preLoaderRoute: typeof DashOrganizacoesIdRouteImport
+      parentRoute: typeof DashOrganizacoesRoute
+    }
+    '/dash/atletas/$id': {
+      id: '/dash/atletas/$id'
+      path: '/$id'
+      fullPath: '/dash/atletas/$id'
+      preLoaderRoute: typeof DashAtletasIdRouteImport
+      parentRoute: typeof DashAtletasRoute
+    }
     '/painel/praticantes/$id/editar': {
       id: '/painel/praticantes/$id/editar'
       path: '/$id/editar'
@@ -462,6 +689,55 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface DashAtletasRouteChildren {
+  DashAtletasIdRoute: typeof DashAtletasIdRoute
+}
+
+const DashAtletasRouteChildren: DashAtletasRouteChildren = {
+  DashAtletasIdRoute: DashAtletasIdRoute,
+}
+
+const DashAtletasRouteWithChildren = DashAtletasRoute._addFileChildren(
+  DashAtletasRouteChildren,
+)
+
+interface DashOrganizacoesRouteChildren {
+  DashOrganizacoesIdRoute: typeof DashOrganizacoesIdRoute
+}
+
+const DashOrganizacoesRouteChildren: DashOrganizacoesRouteChildren = {
+  DashOrganizacoesIdRoute: DashOrganizacoesIdRoute,
+}
+
+const DashOrganizacoesRouteWithChildren =
+  DashOrganizacoesRoute._addFileChildren(DashOrganizacoesRouteChildren)
+
+interface DashRouteChildren {
+  DashAtletasRoute: typeof DashAtletasRouteWithChildren
+  DashAuditoriaRoute: typeof DashAuditoriaRoute
+  DashContatosRoute: typeof DashContatosRoute
+  DashFinanceiroRoute: typeof DashFinanceiroRoute
+  DashGraduacoesRoute: typeof DashGraduacoesRoute
+  DashModelosRoute: typeof DashModelosRoute
+  DashOrganizacoesRoute: typeof DashOrganizacoesRouteWithChildren
+  DashSuporteRoute: typeof DashSuporteRoute
+  DashIndexRoute: typeof DashIndexRoute
+}
+
+const DashRouteChildren: DashRouteChildren = {
+  DashAtletasRoute: DashAtletasRouteWithChildren,
+  DashAuditoriaRoute: DashAuditoriaRoute,
+  DashContatosRoute: DashContatosRoute,
+  DashFinanceiroRoute: DashFinanceiroRoute,
+  DashGraduacoesRoute: DashGraduacoesRoute,
+  DashModelosRoute: DashModelosRoute,
+  DashOrganizacoesRoute: DashOrganizacoesRouteWithChildren,
+  DashSuporteRoute: DashSuporteRoute,
+  DashIndexRoute: DashIndexRoute,
+}
+
+const DashRouteWithChildren = DashRoute._addFileChildren(DashRouteChildren)
 
 interface MinhaContaRouteChildren {
   MinhaContaCarteirinhaRoute: typeof MinhaContaCarteirinhaRoute
@@ -517,6 +793,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   ContatoRoute: ContatoRoute,
+  DashRoute: DashRouteWithChildren,
   MinhaContaRoute: MinhaContaRouteWithChildren,
   PainelRoute: PainelRouteWithChildren,
   PrivacidadeRoute: PrivacidadeRoute,
@@ -529,13 +806,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
