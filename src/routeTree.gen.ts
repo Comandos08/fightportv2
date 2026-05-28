@@ -15,6 +15,7 @@ import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as MinhaContaRouteImport } from './routes/minha-conta'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,6 +25,9 @@ import { Route as PainelPraticantesRouteImport } from './routes/painel.praticant
 import { Route as PainelCreditosRouteImport } from './routes/painel.creditos'
 import { Route as PainelConfiguracoesRouteImport } from './routes/painel.configuracoes'
 import { Route as PIdRouteImport } from './routes/p.$id'
+import { Route as MinhaContaPerfilRouteImport } from './routes/minha-conta.perfil'
+import { Route as MinhaContaGraduacoesRouteImport } from './routes/minha-conta.graduacoes'
+import { Route as MinhaContaCarteirinhaRouteImport } from './routes/minha-conta.carteirinha'
 import { Route as PainelPraticantesNovoRouteImport } from './routes/painel.praticantes.novo'
 import { Route as PainelConquistasNovaRouteImport } from './routes/painel.conquistas.nova'
 import { Route as PainelPraticantesIdEditarRouteImport } from './routes/painel.praticantes.$id.editar'
@@ -56,6 +60,11 @@ const PrivacidadeRoute = PrivacidadeRouteImport.update({
 const PainelRoute = PainelRouteImport.update({
   id: '/painel',
   path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinhaContaRoute = MinhaContaRouteImport.update({
+  id: '/minha-conta',
+  path: '/minha-conta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -103,6 +112,21 @@ const PIdRoute = PIdRouteImport.update({
   path: '/p/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MinhaContaPerfilRoute = MinhaContaPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => MinhaContaRoute,
+} as any)
+const MinhaContaGraduacoesRoute = MinhaContaGraduacoesRouteImport.update({
+  id: '/graduacoes',
+  path: '/graduacoes',
+  getParentRoute: () => MinhaContaRoute,
+} as any)
+const MinhaContaCarteirinhaRoute = MinhaContaCarteirinhaRouteImport.update({
+  id: '/carteirinha',
+  path: '/carteirinha',
+  getParentRoute: () => MinhaContaRoute,
+} as any)
 const PainelPraticantesNovoRoute = PainelPraticantesNovoRouteImport.update({
   id: '/novo',
   path: '/novo',
@@ -124,12 +148,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/minha-conta': typeof MinhaContaRouteWithChildren
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
+  '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
+  '/minha-conta/perfil': typeof MinhaContaPerfilRoute
   '/p/$id': typeof PIdRoute
   '/painel/configuracoes': typeof PainelConfiguracoesRoute
   '/painel/creditos': typeof PainelCreditosRoute
@@ -144,11 +172,15 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/minha-conta': typeof MinhaContaRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
+  '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
+  '/minha-conta/perfil': typeof MinhaContaPerfilRoute
   '/p/$id': typeof PIdRoute
   '/painel/configuracoes': typeof PainelConfiguracoesRoute
   '/painel/creditos': typeof PainelCreditosRoute
@@ -164,12 +196,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/contato': typeof ContatoRoute
+  '/minha-conta': typeof MinhaContaRouteWithChildren
   '/painel': typeof PainelRouteWithChildren
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/verificar': typeof VerificarRoute
+  '/minha-conta/carteirinha': typeof MinhaContaCarteirinhaRoute
+  '/minha-conta/graduacoes': typeof MinhaContaGraduacoesRoute
+  '/minha-conta/perfil': typeof MinhaContaPerfilRoute
   '/p/$id': typeof PIdRoute
   '/painel/configuracoes': typeof PainelConfiguracoesRoute
   '/painel/creditos': typeof PainelCreditosRoute
@@ -186,12 +222,16 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/minha-conta'
     | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/minha-conta/carteirinha'
+    | '/minha-conta/graduacoes'
+    | '/minha-conta/perfil'
     | '/p/$id'
     | '/painel/configuracoes'
     | '/painel/creditos'
@@ -206,11 +246,15 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/minha-conta'
     | '/privacidade'
     | '/recuperar-senha'
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/minha-conta/carteirinha'
+    | '/minha-conta/graduacoes'
+    | '/minha-conta/perfil'
     | '/p/$id'
     | '/painel/configuracoes'
     | '/painel/creditos'
@@ -225,12 +269,16 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/contato'
+    | '/minha-conta'
     | '/painel'
     | '/privacidade'
     | '/recuperar-senha'
     | '/sobre'
     | '/termos'
     | '/verificar'
+    | '/minha-conta/carteirinha'
+    | '/minha-conta/graduacoes'
+    | '/minha-conta/perfil'
     | '/p/$id'
     | '/painel/configuracoes'
     | '/painel/creditos'
@@ -246,6 +294,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
   ContatoRoute: typeof ContatoRoute
+  MinhaContaRoute: typeof MinhaContaRouteWithChildren
   PainelRoute: typeof PainelRouteWithChildren
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
@@ -297,6 +346,13 @@ declare module '@tanstack/react-router' {
       path: '/painel'
       fullPath: '/painel'
       preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minha-conta': {
+      id: '/minha-conta'
+      path: '/minha-conta'
+      fullPath: '/minha-conta'
+      preLoaderRoute: typeof MinhaContaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contato': {
@@ -362,6 +418,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/minha-conta/perfil': {
+      id: '/minha-conta/perfil'
+      path: '/perfil'
+      fullPath: '/minha-conta/perfil'
+      preLoaderRoute: typeof MinhaContaPerfilRouteImport
+      parentRoute: typeof MinhaContaRoute
+    }
+    '/minha-conta/graduacoes': {
+      id: '/minha-conta/graduacoes'
+      path: '/graduacoes'
+      fullPath: '/minha-conta/graduacoes'
+      preLoaderRoute: typeof MinhaContaGraduacoesRouteImport
+      parentRoute: typeof MinhaContaRoute
+    }
+    '/minha-conta/carteirinha': {
+      id: '/minha-conta/carteirinha'
+      path: '/carteirinha'
+      fullPath: '/minha-conta/carteirinha'
+      preLoaderRoute: typeof MinhaContaCarteirinhaRouteImport
+      parentRoute: typeof MinhaContaRoute
+    }
     '/painel/praticantes/novo': {
       id: '/painel/praticantes/novo'
       path: '/novo'
@@ -385,6 +462,22 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface MinhaContaRouteChildren {
+  MinhaContaCarteirinhaRoute: typeof MinhaContaCarteirinhaRoute
+  MinhaContaGraduacoesRoute: typeof MinhaContaGraduacoesRoute
+  MinhaContaPerfilRoute: typeof MinhaContaPerfilRoute
+}
+
+const MinhaContaRouteChildren: MinhaContaRouteChildren = {
+  MinhaContaCarteirinhaRoute: MinhaContaCarteirinhaRoute,
+  MinhaContaGraduacoesRoute: MinhaContaGraduacoesRoute,
+  MinhaContaPerfilRoute: MinhaContaPerfilRoute,
+}
+
+const MinhaContaRouteWithChildren = MinhaContaRoute._addFileChildren(
+  MinhaContaRouteChildren,
+)
 
 interface PainelPraticantesRouteChildren {
   PainelPraticantesNovoRoute: typeof PainelPraticantesNovoRoute
@@ -424,6 +517,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   ContatoRoute: ContatoRoute,
+  MinhaContaRoute: MinhaContaRouteWithChildren,
   PainelRoute: PainelRouteWithChildren,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
