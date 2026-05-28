@@ -66,6 +66,7 @@ const pt: Dict = {
   "search.title": "Verificar um atleta",
   "search.subtitle": "Busque por nome, FP-ID ou organização emissora.",
   "search.placeholder": "Ex: João da Silva, FP-2025-A1B2C3 ou Gracie Barra",
+  "search.ariaLabel": "Buscar atleta",
   "search.button": "Buscar",
   "search.empty.title": "Nenhum atleta encontrado",
   "search.empty.desc": "Tente outro termo ou peça à sua organização para te cadastrar no FightPort.",
