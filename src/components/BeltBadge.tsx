@@ -1,4 +1,4 @@
-import { BELT_COLORS, BELT_TEXT_DARK } from "@/lib/belts";
+import { beltCssColor, beltDarkText } from "@/lib/belts";
 import { useBeltLabel } from "@/lib/beltLabels";
 import { cn } from "@/lib/utils";
 
@@ -12,8 +12,8 @@ export function BeltBadge({
   size?: "sm" | "md" | "lg";
 }) {
   const getLabel = useBeltLabel();
-  const bg = BELT_COLORS[belt] ?? "var(--belt-white)";
-  const darkText = BELT_TEXT_DARK[belt];
+  const bg = beltCssColor(belt);
+  const darkText = beltDarkText(belt);
   const sz =
     size === "sm" ? "text-[10px] px-2 py-0.5" : size === "lg" ? "text-sm px-4 py-1.5" : "text-xs px-3 py-1";
   return (

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { db } from "@/lib/db";
 import { BeltBadge } from "@/components/BeltBadge";
-import { BELT_COLORS, getInitials } from "@/lib/belts";
+import { beltCssColor, getInitials } from "@/lib/belts";
 import { useT } from "@/lib/i18n";
 import { toast } from "sonner";
 import { formatDateBR } from "@/lib/utils";
@@ -257,7 +257,7 @@ function PassportPage() {
                     <li key={a.id} className="relative">
                       <span
                         className="absolute -left-[29px] top-1 size-3 rounded-full ring-4 ring-background"
-                        style={{ background: BELT_COLORS[a.belt] ?? "var(--belt-white)" }}
+                        style={{ background: beltCssColor(a.belt) }}
                       />
                       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         <time>{formatDateBR(a.achievement_date)}</time>
