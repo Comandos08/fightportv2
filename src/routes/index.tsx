@@ -5,7 +5,7 @@ import { SocialProof } from "@/components/site/sections/SocialProof";
 import { ProblemSection } from "@/components/site/sections/ProblemSection";
 import { SolutionSection } from "@/components/site/sections/SolutionSection";
 import { HowItWorks } from "@/components/site/sections/HowItWorks";
-import { SearchSection } from "@/components/site/sections/SearchSection";
+import { AthleteSearch } from "@/components/AthleteSearch";
 import { PricingSection } from "@/components/site/sections/PricingSection";
 import { TestimonialsSection } from "@/components/site/sections/TestimonialsSection";
 import { CtaSection } from "@/components/site/sections/CtaSection";
@@ -35,7 +35,7 @@ function HomePage() {
         <ProblemSection />
         <SolutionSection />
         <HowItWorks />
-        <SearchSection />
+        <AthleteSearch />
         <PricingSection />
         <TestimonialsSection />
         <CtaSection />
