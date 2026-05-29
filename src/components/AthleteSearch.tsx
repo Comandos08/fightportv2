@@ -39,7 +39,7 @@ export function AthleteSearch() {
   const [allRows, setAllRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [facets, setFacets] = useState<Facets>({ modalities: [], belts: [], organizations: [] });
-  const [sortCol, setSortCol] = useState<SortCol | null>(null);
+  const [sortCol, setSortCol] = useState<SortCol | null>("current_belt");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
