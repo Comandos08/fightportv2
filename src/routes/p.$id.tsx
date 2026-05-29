@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { db } from "@/lib/db";
 import { BeltBadge } from "@/components/BeltBadge";
-import { BELT_COLORS, getInitials } from "@/lib/belts";
+import { beltCssColor, getInitials } from "@/lib/belts";
 import { useT } from "@/lib/i18n";
 import { toast } from "sonner";
+import { formatDateBR } from "@/lib/utils";
 
 export const Route = createFileRoute("/p/$id")({
   head: ({ params }) => ({
@@ -256,10 +257,10 @@ function PassportPage() {
                     <li key={a.id} className="relative">
                       <span
                         className="absolute -left-[29px] top-1 size-3 rounded-full ring-4 ring-background"
-                        style={{ background: BELT_COLORS[a.belt] ?? "var(--belt-white)" }}
+                        style={{ background: beltCssColor(a.belt) }}
                       />
                       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                        <time>{new Date(a.achievement_date).toLocaleDateString("pt-BR")}</time>
+                        <time>{formatDateBR(a.achievement_date)}</time>
                         <BeltBadge belt={a.belt} size="sm" />
                         {i === 0 && (
                           <span className="rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wider" style={{ background: "color-mix(in oklab, var(--fp-accent) 20%, transparent)", color: "var(--fp-accent)" }}>

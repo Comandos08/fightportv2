@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { notify } from "@/lib/notifications";
+import { formatDateBR } from "@/lib/utils";
 
 const BASIC = ["Branca", "Cinza", "Amarela", "Laranja", "Verde", "Azul", "Roxa", "Marrom"];
 const BLACK = ["Preta", "Coral", "Vermelha"];
@@ -178,7 +179,7 @@ function NewAchPage() {
           user_id: acct.data.user_id,
           type: "graduation_registered",
           title: "Nova graduação registrada",
-          body: `${belt} — ${format(new Date(date), "dd/MM/yyyy")}`,
+          body: `${belt} — ${formatDateBR(date)}`,
           link: `/p/${fp_id}`,
         });
       }
@@ -360,7 +361,7 @@ function NewAchPage() {
             <div className="space-y-3">
               <div className="text-lg font-bold">{selectedPerson ? `${selectedPerson.people.first_name} ${selectedPerson.people.last_name}` : search}</div>
               <BeltBadge belt={belt} />
-              <div className="text-xs text-muted-foreground">{format(new Date(date), "dd/MM/yyyy")} · {gradBy}</div>
+              <div className="text-xs text-muted-foreground">{formatDateBR(date)} · {gradBy}</div>
               <div className="h-2 w-full rounded" style={{ backgroundColor: BELT_COLORS[belt] }} />
             </div>
           )}

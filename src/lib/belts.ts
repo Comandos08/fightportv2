@@ -20,6 +20,43 @@ export const BELT_TEXT_DARK: Record<string, boolean> = {
   Cinza: true,
 };
 
+/**
+ * Resolves a solid CSS color (var string) for any belt value using substring matching.
+ * Graded variants like "Preta 1º Grau" and compound belts like "Vermelha e Preta 7º Grau"
+ * are handled correctly. For compound reds the capsule/badge uses solid red.
+ */
+export function beltCssColor(belt: string | null | undefined): string {
+  const x = (belt ?? "").toLowerCase().trim();
+  // "vermelha" catches all red variants including compound "e Preta" / "e Branca"
+  if (x.includes("vermelha") || x.includes("red")) return "var(--belt-red)";
+  if (x.includes("preta") || x.includes("black")) return "var(--belt-black)";
+  if (x.includes("marrom") || x.includes("brown")) return "var(--belt-brown)";
+  if (x.includes("roxa") || x.includes("purple")) return "var(--belt-purple)";
+  if (x.includes("azul") || x.includes("blue")) return "var(--belt-blue)";
+  if (x.includes("verde") || x.includes("green")) return "var(--belt-green)";
+  if (x.includes("coral")) return "var(--belt-coral)";
+  if (x.includes("laranja") || x.includes("orange")) return "var(--belt-orange)";
+  if (x.includes("amarela") || x.includes("yellow")) return "var(--belt-yellow)";
+  if (x.includes("cinza") || x.includes("grey") || x.includes("gray")) return "var(--belt-grey)";
+  if (x.includes("branca") || x.includes("white")) return "var(--belt-white)";
+  return "var(--belt-white)";
+}
+
+/**
+ * Returns true when the belt background is light enough to need dark text.
+ * Red overrides the "branca" substring in compound belts like "Vermelha e Branca".
+ */
+export function beltDarkText(belt: string | null | undefined): boolean {
+  const x = (belt ?? "").toLowerCase().trim();
+  if (x.includes("vermelha") || x.includes("red")) return false;
+  return (
+    x.includes("branca") || x.includes("white") ||
+    x.includes("cinza") || x.includes("grey") || x.includes("gray") ||
+    x.includes("amarela") || x.includes("yellow") ||
+    x.includes("laranja") || x.includes("orange")
+  );
+}
+
 // Canonical PT belt names in ascending hierarchy order.
 // Sorting always uses canonical values; getBeltLabel handles localized display.
 const BELT_ORDER: readonly string[] = [

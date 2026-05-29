@@ -19,6 +19,7 @@ import {
 } from "recharts";
 import { BELT_COLORS } from "@/lib/belts";
 import { BeltBadge } from "@/components/BeltBadge";
+import { formatDateBR, formatDateBRShort } from "@/lib/utils";
 import { format, subMonths, startOfMonth } from "date-fns";
 
 export const Route = createFileRoute("/painel/")({ component: DashboardPage });
@@ -108,7 +109,7 @@ function DashboardPage() {
         <Kpi
           label={t("dash.kpi.lastGrad")}
           value={
-            lastGrad ? format(new Date(lastGrad.achieved_at), "dd/MM/yy") : "—"
+            lastGrad ? formatDateBRShort(lastGrad.achieved_at) : "—"
           }
         />
       </div>
@@ -176,7 +177,7 @@ function DashboardPage() {
                   </span>
                 </div>
                 <span className="text-muted-foreground tabular-nums">
-                  {format(new Date(a.achieved_at), "dd/MM/yyyy")}
+                  {formatDateBR(a.achieved_at)}
                 </span>
               </li>
             ))}

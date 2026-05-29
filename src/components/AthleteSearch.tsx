@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { db } from "@/lib/db";
-import { BELT_COLORS, beltRank } from "@/lib/belts";
+import { beltRank } from "@/lib/belts";
 import { getBeltLabel } from "@/lib/beltLabels";
 import { useLocale } from "@/lib/i18n";
 
@@ -344,14 +344,25 @@ function SortTh({
   );
 }
 
-/** Returns the CSS background for the belt color dot, splitting for two-tone red belts. */
+/** Returns the CSS background for the belt color dot; compound red belts get a bicolor gradient. */
 function beltDotStyle(belt: string | null): React.CSSProperties {
-  const x = (belt ?? "").toLowerCase();
+  const x = (belt ?? "").toLowerCase().trim();
   if (x.includes("vermelha e preta"))
-    return { background: "linear-gradient(90deg, #b21e1e 0 50%, #1c1c1f 50% 100%)" };
+    return { background: "linear-gradient(90deg, #b21e1e 50%, #1c1c1f 50%)" };
   if (x.includes("vermelha e branca"))
-    return { background: "linear-gradient(90deg, #b21e1e 0 50%, #eceae4 50% 100%)" };
-  return { background: BELT_COLORS[belt ?? ""] ?? "#aaa" };
+    return { background: "linear-gradient(90deg, #b21e1e 50%, #eceae4 50%)" };
+  if (x.includes("vermelha")) return { background: "#b21e1e" };
+  if (x.includes("preta") || x.includes("black")) return { background: "#1c1c1f" };
+  if (x.includes("marrom")) return { background: "#6b3f1d" };
+  if (x.includes("roxa")) return { background: "#6d28d9" };
+  if (x.includes("azul")) return { background: "#1d4ed8" };
+  if (x.includes("verde")) return { background: "#15803d" };
+  if (x.includes("laranja")) return { background: "#ea580c" };
+  if (x.includes("amarela")) return { background: "#ca8a04" };
+  if (x.includes("coral")) return { background: "#f87171" };
+  if (x.includes("cinza")) return { background: "#9ca3af" };
+  if (x.includes("branca")) return { background: "#eceae4" };
+  return { background: "#b8b6ad" };
 }
 
 function BeltDot({ belt, locale }: { belt: string | null; locale: string }) {
