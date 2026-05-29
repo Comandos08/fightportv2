@@ -29,6 +29,14 @@ export function PanelSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { user } = useSession();
   const [unread, setUnread] = useState(0);
   const [stale, setStale] = useState(0);
+  const [schoolName, setSchoolName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    db.from("schools").select("name").eq("id", user.id).maybeSingle().then(({ data }: { data: { name: string } | null }) => {
+      if (data?.name) setSchoolName(data.name);
+    });
+  }, [user?.id]);
 
   const items: Item[] = [
     { to: "/painel", label: t("panel.nav.dashboard"), icon: LayoutDashboard },
@@ -79,6 +87,9 @@ export function PanelSidebar({ onNavigate }: { onNavigate?: () => void }) {
         <Link to="/painel" className="text-lg font-bold tracking-tight" onClick={onNavigate}>
           FightPort
         </Link>
+        {schoolName && (
+          <div className="mt-0.5 text-xs text-muted-foreground truncate">{schoolName}</div>
+        )}
       </div>
 
       <nav className="flex-1 px-2 py-3 space-y-1">
