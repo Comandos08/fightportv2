@@ -29,6 +29,7 @@ export const Route = createFileRoute("/cadastro")({
     ],
     links: [{ rel: "canonical", href: "/cadastro" }],
   }),
+  validateSearch: (s: Record<string, unknown>): { tab?: string } => ({ tab: s.tab as string | undefined }),
   beforeLoad: async () => {
     const { userId, role } = await getCurrentRole();
     if (userId && role) throw redirect({ to: targetForRole(role) });
@@ -39,8 +40,9 @@ export const Route = createFileRoute("/cadastro")({
 type Mode = "signup" | "login" | "forgot";
 
 function CadastroPage() {
+  const { tab } = Route.useSearch();
   const t = useT();
-  const [mode, setMode] = useState<Mode>("signup");
+  const [mode, setMode] = useState<Mode>(tab === "entrar" ? "login" : "signup");
   const [sentEmail, setSentEmail] = useState<string | null>(null);
 
   return (
