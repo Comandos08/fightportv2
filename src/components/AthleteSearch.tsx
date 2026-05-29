@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { db } from "@/lib/db";
 import { BELT_COLORS } from "@/lib/belts";
+import { getBeltLabel } from "@/lib/beltLabels";
+import { useLocale } from "@/lib/i18n";
 
 type Row = {
   fp_id: string;
@@ -22,6 +24,7 @@ const PAGE_SIZE = 20;
 
 export function AthleteSearch() {
   const navigate = useNavigate();
+  const locale = useLocale();
   const [query, setQuery] = useState("");
   const [modality, setModality] = useState("");
   const [belt, setBelt] = useState("");
@@ -144,7 +147,7 @@ export function AthleteSearch() {
           >
             <option value="">Graduação</option>
             {beltsForModality.map((b) => (
-              <option key={b} value={b}>{b}</option>
+              <option key={b} value={b}>{getBeltLabel(b, locale)}</option>
             ))}
           </select>
           <select
@@ -215,7 +218,7 @@ export function AthleteSearch() {
                         {r.modality ?? "—"}
                       </td>
                       <td className="px-4 py-3">
-                        <BeltDot belt={r.current_belt} />
+                        <BeltDot belt={r.current_belt} locale={locale} />
                       </td>
                     </tr>
                   ))}
@@ -234,7 +237,7 @@ export function AthleteSearch() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <span className="font-semibold leading-tight">{r.full_name}</span>
-                    <BeltDot belt={r.current_belt} />
+                    <BeltDot belt={r.current_belt} locale={locale} />
                   </div>
                   <div
                     className="mt-1 text-xs text-muted-foreground"
@@ -280,7 +283,7 @@ export function AthleteSearch() {
   );
 }
 
-function BeltDot({ belt }: { belt: string | null }) {
+function BeltDot({ belt, locale }: { belt: string | null; locale: string }) {
   if (!belt) return <span className="text-xs text-muted-foreground">—</span>;
   return (
     <span className="inline-flex items-center gap-1.5 text-xs">
@@ -288,7 +291,7 @@ function BeltDot({ belt }: { belt: string | null }) {
         className="inline-block h-2.5 w-2.5 rounded-full border border-black/10 flex-shrink-0"
         style={{ background: BELT_COLORS[belt] ?? "#aaa" }}
       />
-      <span className="text-muted-foreground">{belt}</span>
+      <span className="text-muted-foreground">{getBeltLabel(belt, locale)}</span>
     </span>
   );
 }

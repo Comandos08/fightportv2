@@ -581,7 +581,8 @@ const pt: Dict = {
   "dash.audit.action.belt_model.deactivate": "Desativou modelo de graduação",
 };
 
-const dicts: Record<string, Dict> = { "pt-BR": pt };
+// en-US and es-ES use pt-BR as the UI baseline; belt labels are handled separately by beltLabels.ts.
+const dicts: Record<string, Dict> = { "pt-BR": pt, "en-US": pt, "es-ES": pt };
 
 let current = "pt-BR";
 const listeners = new Set<() => void>();
