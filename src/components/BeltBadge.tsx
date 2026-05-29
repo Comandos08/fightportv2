@@ -1,4 +1,5 @@
 import { BELT_COLORS, BELT_TEXT_DARK } from "@/lib/belts";
+import { useBeltLabel } from "@/lib/beltLabels";
 import { cn } from "@/lib/utils";
 
 export function BeltBadge({
@@ -10,6 +11,7 @@ export function BeltBadge({
   className?: string;
   size?: "sm" | "md" | "lg";
 }) {
+  const getLabel = useBeltLabel();
   const bg = BELT_COLORS[belt] ?? "var(--belt-white)";
   const darkText = BELT_TEXT_DARK[belt];
   const sz =
@@ -27,7 +29,7 @@ export function BeltBadge({
         borderColor: darkText ? "rgba(0,0,0,.1)" : "transparent",
       }}
     >
-      Faixa {belt}
+      {getLabel(belt)}
     </span>
   );
 }
