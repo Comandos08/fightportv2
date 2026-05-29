@@ -21,13 +21,16 @@ export const BELT_TEXT_DARK: Record<string, boolean> = {
 };
 
 /**
- * Resolves a solid CSS color (var string) for any belt value using substring matching.
- * Graded variants like "Preta 1º Grau" and compound belts like "Vermelha e Preta 7º Grau"
- * are handled correctly. For compound reds the capsule/badge uses solid red.
+ * Resolves a CSS background value for any belt string using substring matching.
+ * Compound red belts get a bicolor gradient; all other variants get a solid CSS var.
  */
 export function beltCssColor(belt: string | null | undefined): string {
   const x = (belt ?? "").toLowerCase().trim();
-  // "vermelha" catches all red variants including compound "e Preta" / "e Branca"
+  // Compound reds must come before plain "vermelha" / "preta" checks
+  if (x.includes("vermelha e preta"))
+    return "linear-gradient(90deg, #b21e1e 50%, #1c1c1f 50%)";
+  if (x.includes("vermelha e branca"))
+    return "linear-gradient(90deg, #b21e1e 50%, #eceae4 50%)";
   if (x.includes("vermelha") || x.includes("red")) return "var(--belt-red)";
   if (x.includes("preta") || x.includes("black")) return "var(--belt-black)";
   if (x.includes("marrom") || x.includes("brown")) return "var(--belt-brown)";
@@ -44,10 +47,11 @@ export function beltCssColor(belt: string | null | undefined): string {
 
 /**
  * Returns true when the belt background is light enough to need dark text.
- * Red overrides the "branca" substring in compound belts like "Vermelha e Branca".
+ * "Vermelha e Branca" needs dark text because half the badge is white.
  */
 export function beltDarkText(belt: string | null | undefined): boolean {
   const x = (belt ?? "").toLowerCase().trim();
+  if (x.includes("vermelha e branca")) return true;
   if (x.includes("vermelha") || x.includes("red")) return false;
   return (
     x.includes("branca") || x.includes("white") ||

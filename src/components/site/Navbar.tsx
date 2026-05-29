@@ -32,7 +32,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-2">
           <LanguageSwitcher />
           <ThemeToggle />
-          <Link to="/cadastro">
+          <Link to="/cadastro" search={{ tab: "entrar" }}>
             <Button variant="ghost" size="sm">{t("nav.login")}</Button>
           </Link>
           <Link to="/cadastro">
@@ -55,7 +55,7 @@ export function Navbar() {
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
-            <Link to="/cadastro" onClick={() => setOpen(false)}>
+            <Link to="/cadastro" search={{ tab: "entrar" }} onClick={() => setOpen(false)}>
               <Button variant="outline" size="sm" className="w-full">{t("nav.login")}</Button>
             </Link>
             <Link to="/cadastro" onClick={() => setOpen(false)}>
