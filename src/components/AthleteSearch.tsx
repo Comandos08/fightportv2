@@ -20,7 +20,8 @@ type Facets = {
   organizations: { name: string; count: number }[];
 };
 
-type SortCol = "full_name" | "fp_id" | "modality" | "current_belt" | "organization";
+// fp_id removed — stacked in the Atleta cell, no longer a standalone sort column
+type SortCol = "full_name" | "modality" | "current_belt" | "organization";
 type SortDir = "asc" | "desc";
 
 const PAGE_SIZE = 20;
@@ -119,14 +120,18 @@ export function AthleteSearch() {
   const sortedRows = useMemo(() => {
     if (!sortCol) return allRows;
     return [...allRows].sort((a, b) => {
-      let cmp = 0;
       if (sortCol === "current_belt") {
-        cmp = beltRank(a.current_belt) - beltRank(b.current_belt);
-      } else if (sortCol === "fp_id") {
-        cmp = (a.fp_id ?? "").localeCompare(b.fp_id ?? "");
-      } else {
-        cmp = (a[sortCol] ?? "").localeCompare(b[sortCol] ?? "", undefined, { sensitivity: "base" });
+        // Null/empty belts always pin to the bottom, regardless of direction.
+        const aNull = !a.current_belt;
+        const bNull = !b.current_belt;
+        if (aNull && bNull) return 0;
+        if (aNull) return 1;
+        if (bNull) return -1;
+        // asc = highest rank first; desc = lowest rank first.
+        const diff = beltRank(b.current_belt) - beltRank(a.current_belt);
+        return sortDir === "asc" ? diff : -diff;
       }
+      const cmp = (a[sortCol] ?? "").localeCompare(b[sortCol] ?? "", undefined, { sensitivity: "base" });
       return sortDir === "asc" ? cmp : -cmp;
     });
   }, [allRows, sortCol, sortDir]);
@@ -207,13 +212,12 @@ export function AthleteSearch() {
           </div>
         ) : (
           <>
-            {/* Desktop table — column order: Atleta · FP-ID · Organização · Modalidade · Graduação */}
+            {/* Desktop table — FP-ID stacked under name; columns: Atleta · Organização · Modalidade · Graduação */}
             <div className="hidden sm:block overflow-hidden rounded-xl border border-border bg-background">
               <table className="w-full text-sm">
                 <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
                   <tr>
                     <SortTh col="full_name" label="Atleta" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
-                    <SortTh col="fp_id" label="FP-ID" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
                     <SortTh col="organization" label="Organização" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
                     <SortTh col="modality" label="Modalidade" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
                     <SortTh col="current_belt" label="Graduação" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
@@ -226,21 +230,16 @@ export function AthleteSearch() {
                       className="border-t border-border hover:bg-muted/30 cursor-pointer transition-colors"
                       onClick={() => navigate({ to: "/p/$id", params: { id: r.fp_id } })}
                     >
-                      <td className="px-4 py-3 font-medium">
+                      <td className="px-4 py-3">
                         <Link
                           to="/p/$id"
                           params={{ id: r.fp_id }}
-                          className="hover:underline"
+                          className="hover:underline block"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {r.full_name}
+                          <div className="font-medium text-[15px] tracking-[-0.01em] truncate">{r.full_name}</div>
+                          <div className="font-['Space_Mono',monospace] text-xs text-[#8f8e86]">{r.fp_id}</div>
                         </Link>
-                      </td>
-                      <td
-                        className="px-4 py-3 text-xs text-muted-foreground"
-                        style={{ fontFamily: "'Space Mono', var(--font-mono)" }}
-                      >
-                        {r.fp_id}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">
                         {r.organization ?? "—"}
@@ -345,13 +344,23 @@ function SortTh({
   );
 }
 
+/** Returns the CSS background for the belt color dot, splitting for two-tone red belts. */
+function beltDotStyle(belt: string | null): React.CSSProperties {
+  const x = (belt ?? "").toLowerCase();
+  if (x.includes("vermelha e preta"))
+    return { background: "linear-gradient(90deg, #b21e1e 0 50%, #1c1c1f 50% 100%)" };
+  if (x.includes("vermelha e branca"))
+    return { background: "linear-gradient(90deg, #b21e1e 0 50%, #eceae4 50% 100%)" };
+  return { background: BELT_COLORS[belt ?? ""] ?? "#aaa" };
+}
+
 function BeltDot({ belt, locale }: { belt: string | null; locale: string }) {
   if (!belt) return <span className="text-xs text-muted-foreground">—</span>;
   return (
     <span className="inline-flex items-center gap-1.5 text-xs">
       <span
         className="inline-block h-2.5 w-2.5 rounded-full border border-black/10 flex-shrink-0"
-        style={{ background: BELT_COLORS[belt] ?? "#aaa" }}
+        style={beltDotStyle(belt)}
       />
       <span className="text-muted-foreground">{getBeltLabel(belt, locale)}</span>
     </span>
@@ -369,7 +378,6 @@ function SearchSkeleton() {
           <div className="h-4 bg-muted rounded w-36" />
           <div className="h-3 bg-muted rounded w-20" />
           <div className="h-4 bg-muted rounded w-28" />
-          <div className="h-4 bg-muted rounded w-16" />
           <div className="h-2.5 w-2.5 bg-muted rounded-full" />
         </div>
       ))}
