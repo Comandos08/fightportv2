@@ -13,6 +13,7 @@ import { BELT_COLORS, MARTIAL_ARTS, getInitials } from "@/lib/belts";
 import { BeltBadge } from "@/components/BeltBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { formatDateBR } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   AlertDialog,
@@ -428,7 +429,7 @@ function PracRow({
                 <tbody>
                   {achs.map((a: any) => (
                     <tr key={a.id}>
-                      <td className="py-1 tabular-nums">{format(new Date(a.achieved_at), "dd/MM/yyyy")}</td>
+                      <td className="py-1 tabular-nums">{formatDateBR(a.achieved_at)}</td>
                       <td>
                         <BeltBadge belt={a.belt} />
                       </td>

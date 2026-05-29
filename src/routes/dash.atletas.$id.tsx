@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { DashPageHeader, DashSection, DashTable } from "@/components/dash/DashCommon";
 import { BeltBadge } from "@/components/BeltBadge";
 import { getInitials } from "@/lib/belts";
+import { formatDateBR } from "@/lib/utils";
 
 export const Route = createFileRoute("/dash/atletas/$id")({
   component: AthleteDetail,
@@ -137,7 +138,7 @@ function AthleteDetail() {
           <DashTable
             rows={achievements}
             columns={[
-              { key: "achievement_date", label: "Data", render: (r: any) => new Date(r.achievement_date).toLocaleDateString("pt-BR") },
+              { key: "achievement_date", label: "Data", render: (r: any) => formatDateBR(r.achievement_date) },
               { key: "school_name", label: "Escola" },
               { key: "martial_art", label: "Modalidade" },
               { key: "belt", label: "Faixa", render: (r: any) => <BeltBadge belt={r.belt} size="sm" /> },

@@ -8,6 +8,7 @@ import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { DashPageHeader, DashTable, DashFiltersBar, DashSearch, DashPagination, DashTableSkeleton } from "@/components/dash/DashCommon";
 import { BeltBadge } from "@/components/BeltBadge";
+import { formatDateBR } from "@/lib/utils";
 
 export const Route = createFileRoute("/dash/graduacoes")({
   component: GradsPage,
@@ -69,7 +70,7 @@ function GradsPage() {
           <DashTable
             rows={rows}
             columns={[
-              { key: "achievement_date", label: t("dash.grad.col.date"), render: (r: any) => new Date(r.achievement_date).toLocaleDateString("pt-BR") },
+              { key: "achievement_date", label: t("dash.grad.col.date"), render: (r: any) => formatDateBR(r.achievement_date) },
               { key: "athlete", label: t("dash.grad.col.athlete"), render: (r: any) => (
                 <div className="flex flex-col">
                   <span>{r.first_name} {r.last_name}</span>

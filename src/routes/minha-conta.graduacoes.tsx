@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { useSession } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
 import { BeltBadge } from "@/components/BeltBadge";
+import { formatDateBR } from "@/lib/utils";
 
 export const Route = createFileRoute("/minha-conta/graduacoes")({
   component: GraduationsPage,
@@ -65,8 +66,7 @@ function GraduationsPage() {
     toast.success(t("athlete.grad.hashCopied"));
   };
 
-  const formatDate = (d: string) =>
-    new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const formatDate = (d: string) => formatDateBR(d);
 
   const shortHash = (h: string | null) => (h ? `${h.slice(0, 8)}…${h.slice(-8)}` : "—");
 
