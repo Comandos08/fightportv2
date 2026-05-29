@@ -20,6 +20,40 @@ export const BELT_TEXT_DARK: Record<string, boolean> = {
   Cinza: true,
 };
 
+// Canonical PT belt names in ascending hierarchy order.
+// Sorting always uses canonical values; getBeltLabel handles localized display.
+const BELT_ORDER: readonly string[] = [
+  "Branca",
+  "Cinza",
+  "Amarela",
+  "Laranja",
+  "Verde",
+  "Azul",
+  "Roxa",
+  "Marrom",
+  "Coral",
+  "Preta",
+  "Preta 1º Grau",
+  "Preta 2º Grau",
+  "Preta 3º Grau",
+  "Preta 4º Grau",
+  "Preta 5º Grau",
+  "Preta 6º Grau",
+  "Vermelha e Preta 7º Grau",
+  "Vermelha e Branca 8º Grau",
+  "Vermelha 9º Grau",
+  "Vermelha 10º Grau",
+  "Vermelha",
+];
+
+const _BELT_RANK = new Map<string, number>(BELT_ORDER.map((b, i) => [b, i]));
+
+/** Returns the hierarchy rank for a canonical PT belt value. Unknown belts sort last. */
+export function beltRank(belt: string | null | undefined): number {
+  if (!belt) return -1;
+  return _BELT_RANK.get(belt) ?? BELT_ORDER.length;
+}
+
 export const MARTIAL_ARTS = [
   "Jiu-Jitsu Brasileiro",
   "Karatê",

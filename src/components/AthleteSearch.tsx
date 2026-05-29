@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { db } from "@/lib/db";
-import { BELT_COLORS } from "@/lib/belts";
+import { BELT_COLORS, beltRank } from "@/lib/belts";
 import { getBeltLabel } from "@/lib/beltLabels";
 import { useLocale } from "@/lib/i18n";
 
@@ -20,7 +20,12 @@ type Facets = {
   organizations: { name: string; count: number }[];
 };
 
+type SortCol = "full_name" | "fp_id" | "modality" | "current_belt" | "organization";
+type SortDir = "asc" | "desc";
+
 const PAGE_SIZE = 20;
+// Fetch enough rows for client-side sort; a value of 500 covers all realistic search results.
+const FETCH_LIMIT = 500;
 
 export function AthleteSearch() {
   const navigate = useNavigate();
@@ -30,35 +35,38 @@ export function AthleteSearch() {
   const [belt, setBelt] = useState("");
   const [org, setOrg] = useState("");
   const [offset, setOffset] = useState(0);
-  const [rows, setRows] = useState<Row[]>([]);
+  const [allRows, setAllRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [facets, setFacets] = useState<Facets>({ modalities: [], belts: [], organizations: [] });
+  const [sortCol, setSortCol] = useState<SortCol | null>(null);
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     db.rpc("search_facets_public").then(({ data }) => {
       if (data) setFacets(data as Facets);
     });
-    runSearch("", "", "", "", 0);
+    runSearch("", "", "", "");
   }, []);
 
-  function runSearch(q: string, mod: string, b: string, o: string, off: number) {
+  function runSearch(q: string, mod: string, b: string, o: string) {
     setLoading(true);
     db.rpc("search_athletes_public", {
       p_query: q || null,
       p_modality: mod || null,
       p_belt: b || null,
       p_org: o || null,
-      p_limit: PAGE_SIZE,
-      p_offset: off,
+      p_limit: FETCH_LIMIT,
+      p_offset: 0,
     })
       .then(({ data, error }) => {
         if (error) console.error("[AthleteSearch] RPC error:", error);
-        setRows(Array.isArray(data) ? data : []);
+        setAllRows(Array.isArray(data) ? data : []);
+        setOffset(0);
       })
       .catch((e) => {
         console.error("[AthleteSearch] fetch error:", e);
-        setRows([]);
+        setAllRows([]);
       })
       .finally(() => setLoading(false));
   }
@@ -67,7 +75,7 @@ export function AthleteSearch() {
     setQuery(v);
     setOffset(0);
     clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => runSearch(v, modality, belt, org, 0), 350);
+    debounceRef.current = setTimeout(() => runSearch(v, modality, belt, org), 350);
   }
 
   function handleModality(v: string) {
@@ -75,36 +83,61 @@ export function AthleteSearch() {
     setBelt("");
     setOffset(0);
     clearTimeout(debounceRef.current);
-    runSearch(query, v, "", org, 0);
+    runSearch(query, v, "", org);
   }
 
   function handleBelt(v: string) {
     setBelt(v);
     setOffset(0);
     clearTimeout(debounceRef.current);
-    runSearch(query, modality, v, org, 0);
+    runSearch(query, modality, v, org);
   }
 
   function handleOrg(v: string) {
     setOrg(v);
     setOffset(0);
     clearTimeout(debounceRef.current);
-    runSearch(query, modality, belt, v, 0);
+    runSearch(query, modality, belt, v);
   }
 
   function handlePage(newOff: number) {
     setOffset(newOff);
-    clearTimeout(debounceRef.current);
-    runSearch(query, modality, belt, org, newOff);
     document.getElementById("busca")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+  function handleSort(col: SortCol) {
+    if (sortCol === col) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortCol(col);
+      setSortDir("asc");
+    }
+    setOffset(0);
+  }
+
+  // Sort the full result set client-side; paginate the sorted slice.
+  const sortedRows = useMemo(() => {
+    if (!sortCol) return allRows;
+    return [...allRows].sort((a, b) => {
+      let cmp = 0;
+      if (sortCol === "current_belt") {
+        cmp = beltRank(a.current_belt) - beltRank(b.current_belt);
+      } else if (sortCol === "fp_id") {
+        cmp = (a.fp_id ?? "").localeCompare(b.fp_id ?? "");
+      } else {
+        cmp = (a[sortCol] ?? "").localeCompare(b[sortCol] ?? "", undefined, { sensitivity: "base" });
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+  }, [allRows, sortCol, sortDir]);
+
+  const pageRows = sortedRows.slice(offset, offset + PAGE_SIZE);
+  const hasPrev = offset > 0;
+  const hasNext = offset + PAGE_SIZE < sortedRows.length;
 
   const beltsForModality = modality
     ? facets.belts.filter((b) => b.modality === modality).map((b) => b.belt)
     : [...new Set(facets.belts.map((b) => b.belt))];
-
-  const hasPrev = offset > 0;
-  const hasNext = rows.length === PAGE_SIZE;
 
   return (
     <section id="busca" className="py-20 sm:py-28 border-y border-border bg-muted/20">
@@ -121,7 +154,7 @@ export function AthleteSearch() {
           </p>
         </div>
 
-        {/* Filters */}
+        {/* Filters — order: search · Modalidade · Graduação · Organização */}
         <div className="flex flex-col sm:flex-row gap-2 mb-6">
           <input
             type="search"
@@ -165,7 +198,7 @@ export function AthleteSearch() {
         {/* Results */}
         {loading ? (
           <SearchSkeleton />
-        ) : rows.length === 0 ? (
+        ) : sortedRows.length === 0 ? (
           <div className="rounded-xl border border-border bg-background p-10 text-center">
             <p className="font-semibold">Nenhum atleta encontrado</p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -174,26 +207,24 @@ export function AthleteSearch() {
           </div>
         ) : (
           <>
-            {/* Desktop table */}
+            {/* Desktop table — column order: Atleta · FP-ID · Organização · Modalidade · Graduação */}
             <div className="hidden sm:block overflow-hidden rounded-xl border border-border bg-background">
               <table className="w-full text-sm">
                 <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
                   <tr>
-                    <th className="text-left px-4 py-3">Atleta</th>
-                    <th className="text-left px-4 py-3">FP-ID</th>
-                    <th className="text-left px-4 py-3">Organização</th>
-                    <th className="text-left px-4 py-3">Modalidade</th>
-                    <th className="text-left px-4 py-3">Graduação</th>
+                    <SortTh col="full_name" label="Atleta" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
+                    <SortTh col="fp_id" label="FP-ID" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
+                    <SortTh col="organization" label="Organização" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
+                    <SortTh col="modality" label="Modalidade" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
+                    <SortTh col="current_belt" label="Graduação" sortCol={sortCol} dir={sortDir} onSort={handleSort} />
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((r) => (
+                  {pageRows.map((r) => (
                     <tr
                       key={r.fp_id}
                       className="border-t border-border hover:bg-muted/30 cursor-pointer transition-colors"
-                      onClick={() =>
-                        navigate({ to: "/p/$id", params: { id: r.fp_id } })
-                      }
+                      onClick={() => navigate({ to: "/p/$id", params: { id: r.fp_id } })}
                     >
                       <td className="px-4 py-3 font-medium">
                         <Link
@@ -228,7 +259,7 @@ export function AthleteSearch() {
 
             {/* Mobile cards */}
             <div className="sm:hidden space-y-2">
-              {rows.map((r) => (
+              {pageRows.map((r) => (
                 <Link
                   key={r.fp_id}
                   to="/p/$id"
@@ -266,6 +297,7 @@ export function AthleteSearch() {
                 </button>
                 <span className="text-xs text-muted-foreground">
                   Página {Math.floor(offset / PAGE_SIZE) + 1}
+                  {sortedRows.length > 0 && ` · ${sortedRows.length} resultados`}
                 </span>
                 <button
                   disabled={!hasNext}
@@ -280,6 +312,36 @@ export function AthleteSearch() {
         )}
       </div>
     </section>
+  );
+}
+
+function SortTh({
+  col,
+  label,
+  sortCol,
+  dir,
+  onSort,
+}: {
+  col: SortCol;
+  label: string;
+  sortCol: SortCol | null;
+  dir: SortDir;
+  onSort: (col: SortCol) => void;
+}) {
+  const active = sortCol === col;
+  return (
+    <th
+      className="text-left px-4 py-3 cursor-pointer select-none hover:bg-muted/60 transition-colors"
+      onClick={() => onSort(col)}
+      aria-sort={active ? (dir === "asc" ? "ascending" : "descending") : "none"}
+    >
+      <span className="inline-flex items-center gap-1">
+        {label}
+        <span className="text-[10px]" aria-hidden="true">
+          {active ? (dir === "asc" ? "↑" : "↓") : <span className="opacity-30">↕</span>}
+        </span>
+      </span>
+    </th>
   );
 }
 
