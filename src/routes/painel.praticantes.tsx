@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState, useRef } from "react";
 import { ChevronDown, ChevronRight, Copy, Download, Upload, Plus } from "lucide-react";
@@ -31,6 +31,9 @@ export const Route = createFileRoute("/painel/praticantes")({ component: PracsPa
 const PAGE = 20;
 
 function PracsPage() {
+  const path = useRouterState({ select: (s) => s.location.pathname });
+  if (path !== "/painel/praticantes") return <Outlet />;
+
   const t = useT();
   const qc = useQueryClient();
   const { user } = useSession();
