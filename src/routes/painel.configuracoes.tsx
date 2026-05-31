@@ -31,7 +31,7 @@ function ConfigPage() {
       const s = await db.from("schools").select("*").eq("id", schoolId).maybeSingle();
       if (s.data) setSchool(s.data);
       const c = await db.from("head_coaches").select("*").eq("school_id", schoolId).maybeSingle();
-      if (c.data) setCoach(c.data);
+      setCoach(c.data ?? { name: "", graduation: "" });
     })();
   }, [schoolId]);
 
@@ -56,11 +56,17 @@ function ConfigPage() {
   };
 
   const saveCoach = async () => {
-    const res = await db.from("head_coaches").upsert({
-      school_id: schoolId,
-      name: coach.name,
-      graduation: coach.graduation,
-    });
+    const res = await db
+      .from("head_coaches")
+      .upsert(
+        {
+          school_id: schoolId,
+          name: coach.name,
+          graduation: coach.graduation,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "school_id" }
+      );
     if (res.error) return toast.error(res.error.message);
     toast.success("Salvo.");
   };
