@@ -24,47 +24,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Topbar, TopbarGhostBtn } from "@/components/Topbar";
+import { getBeltTailwindClasses } from "@/components/BeltBadge";
 
 export const Route = createFileRoute("/painel/praticantes")({ component: PracsPage });
 
 const PAGE = 20;
 
-function getBeltTokens(belt: string | null | undefined) {
-  const x = (belt ?? "").toLowerCase().trim();
-  if (x.includes("vermelha") || x.includes("red"))
-    return { bg: "var(--color-belt-verm-bg)", text: "var(--color-belt-verm-text)", dot: "var(--color-belt-verm-dot)" };
-  if (x.includes("coral"))
-    return { bg: "var(--color-belt-coral-bg)", text: "var(--color-belt-coral-text)", dot: "var(--color-belt-coral-dot)" };
-  if (x.includes("preta") || x.includes("black"))
-    return { bg: "var(--color-belt-preta-bg)", text: "var(--color-belt-preta-text)", dot: "var(--color-belt-preta-dot)", border: "1px solid #333" };
-  if (x.includes("marrom") || x.includes("brown"))
-    return { bg: "var(--color-belt-marrom-bg)", text: "var(--color-belt-marrom-text)", dot: "var(--color-belt-marrom-dot)" };
-  if (x.includes("roxa") || x.includes("purple"))
-    return { bg: "var(--color-belt-roxa-bg)", text: "var(--color-belt-roxa-text)", dot: "var(--color-belt-roxa-dot)" };
-  if (x.includes("azul") || x.includes("blue"))
-    return { bg: "var(--color-belt-azul-bg)", text: "var(--color-belt-azul-text)", dot: "var(--color-belt-azul-dot)" };
-  if (x.includes("verde") || x.includes("green"))
-    return { bg: "var(--color-belt-verde-bg)", text: "var(--color-belt-verde-text)", dot: "var(--color-belt-verde-dot)" };
-  if (x.includes("laranja") || x.includes("orange"))
-    return { bg: "var(--color-belt-laranja-bg)", text: "var(--color-belt-laranja-text)", dot: "var(--color-belt-laranja-dot)" };
-  if (x.includes("amarela") || x.includes("yellow"))
-    return { bg: "var(--color-belt-amarela-bg)", text: "var(--color-belt-amarela-text)", dot: "var(--color-belt-amarela-dot)" };
-  if (x.includes("cinza") || x.includes("grey") || x.includes("gray"))
-    return { bg: "var(--color-belt-cinza-bg)", text: "var(--color-belt-cinza-text)", dot: "var(--color-belt-cinza-dot)" };
-  return { bg: "var(--color-belt-branca-bg)", text: "var(--color-belt-branca-text)", dot: "var(--color-belt-branca-dot)", border: "1px solid #e5e5e5" };
-}
-
 function PracBeltBadge({ belt }: { belt: string | null | undefined }) {
-  if (!belt) return <span style={{ fontSize: 11, color: "var(--color-text-faint)" }}>—</span>;
-  const t = getBeltTokens(belt);
+  if (!belt) return <span className="text-[11px] text-[#bbbbbb]">—</span>;
+  const { wrapper, dot, gradientStyle } = getBeltTailwindClasses(belt);
   return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 5,
-      padding: "3px 9px 3px 7px", borderRadius: 20,
-      fontSize: 11, fontWeight: 500, whiteSpace: "nowrap",
-      background: t.bg, color: t.text, border: t.border ?? "none",
-    }}>
-      <span style={{ width: 7, height: 7, borderRadius: "50%", background: t.dot, flexShrink: 0 }} />
+    <span
+      className={`inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[20px] text-[11px] font-medium whitespace-nowrap ${wrapper}`}
+      style={gradientStyle ? { background: gradientStyle } : undefined}
+    >
+      <span className={`w-[7px] h-[7px] rounded-full flex-shrink-0 ${dot}`} />
       {belt}
     </span>
   );
@@ -259,36 +233,19 @@ function PracsPage() {
     [schoolMeta?.city, schoolMeta?.state].filter(Boolean).join(" — "),
   ].filter(Boolean).join(" · ");
 
-  const tabStyle = (active: boolean): React.CSSProperties => ({
-    padding: "8px 16px",
-    fontSize: 12.5,
-    fontWeight: 500,
-    fontFamily: "var(--font-body)",
-    color: active ? "var(--color-text-primary)" : "var(--color-text-muted)",
-    borderBottom: active ? "2px solid var(--color-accent)" : "2px solid transparent",
-    marginBottom: -1,
-    background: "none",
-    border: "none",
-    borderBottomWidth: 2,
-    borderBottomStyle: "solid",
-    borderBottomColor: active ? "var(--color-accent)" : "transparent",
-    cursor: "pointer",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-  });
+  const tabCls = (active: boolean) =>
+    `px-4 py-2 text-[12.5px] font-medium inline-flex items-center gap-1.5 cursor-pointer bg-transparent border-0 border-b-2 -mb-px transition-colors ${
+      active ? "text-[#0f0f0f] border-[#E07B20]" : "text-[#999999] border-transparent"
+    }`;
 
   const tabBadge = (count: number, variant: "all" | "with" | "without") => {
-    const styles: Record<string, React.CSSProperties> = {
-      all: { background: "var(--color-accent-dim)", color: "var(--color-accent)" },
-      with: { background: "#e8f5ec", color: "#22a05a" },
-      without: { background: "#f4f4f4", color: "#888888" },
-    };
+    const cls = variant === "all"
+      ? "bg-[#fef3e6] text-[#E07B20]"
+      : variant === "with"
+      ? "bg-[#e8f5ec] text-[#22a05a]"
+      : "bg-[#f4f4f4] text-[#888888]";
     return (
-      <span style={{
-        ...styles[variant],
-        fontSize: 10.5, fontWeight: 600, padding: "1px 6px", borderRadius: 10,
-      }}>
+      <span className={`text-[10.5px] font-semibold px-1.5 py-px rounded-[10px] ${cls}`}>
         {count}
       </span>
     );
@@ -314,20 +271,7 @@ function PracsPage() {
         />
         <Link
           to="/painel/praticantes/novo"
-          className="topbar-primary-link"
-          style={{
-            background: "var(--color-accent)",
-            color: "#000",
-            fontWeight: 600,
-            padding: "7px 15px",
-            borderRadius: 8,
-            fontSize: 12,
-            fontFamily: "var(--font-body)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 5,
-            textDecoration: "none",
-          }}
+          className="bg-[#E07B20] hover:bg-[#F5A623] text-black font-semibold px-[15px] py-[7px] rounded-lg text-[12px] inline-flex items-center gap-[5px] no-underline transition-colors"
         >
           <Plus className="h-3 w-3" />
           {t("prac.new")}
@@ -335,53 +279,34 @@ function PracsPage() {
       </Topbar>
 
       {/* Tab bar */}
-      <div style={{
-        background: "var(--color-surface)",
-        borderBottom: "1px solid var(--color-border)",
-        padding: "14px 24px 0",
-        display: "flex",
-        gap: 4,
-      }}>
-        <button style={tabStyle(tab === "all")} onClick={() => { setTab("all"); setPage(1); }}>
+      <div className="bg-white border-b border-[#E8E6E1] px-6 pt-[14px] flex gap-1">
+        <button className={tabCls(tab === "all")} onClick={() => { setTab("all"); setPage(1); }}>
           Todos {tabBadge(filtered.length, "all")}
         </button>
-        <button style={tabStyle(tab === "with")} onClick={() => { setTab("with"); setPage(1); }}>
+        <button className={tabCls(tab === "with")} onClick={() => { setTab("with"); setPage(1); }}>
           Com conquistas {tabBadge(countWith, "with")}
         </button>
-        <button style={tabStyle(tab === "without")} onClick={() => { setTab("without"); setPage(1); }}>
+        <button className={tabCls(tab === "without")} onClick={() => { setTab("without"); setPage(1); }}>
           Sem conquistas {tabBadge(countWithout, "without")}
         </button>
       </div>
 
       {/* Page body */}
-      <div style={{ padding: "20px 24px", background: "var(--color-page-bg)", flex: 1 }}>
+      <div className="p-5 px-6 flex-1">
 
         {/* Search + filter bar */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-          <div style={{ flex: 1, position: "relative" }}>
-            <Search style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", width: 14, height: 14, color: "var(--color-text-faint)" }} />
+        <div className="flex gap-2 mb-3.5">
+          <div className="flex-1 relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#bbbbbb]" />
             <input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               placeholder={t("prac.search.ph")}
-              style={{
-                width: "100%",
-                padding: "9px 10px 9px 34px",
-                border: "1px solid var(--color-border)",
-                borderRadius: 9,
-                fontSize: 12.5,
-                fontFamily: "var(--font-body)",
-                background: "var(--color-surface)",
-                outline: "none",
-                color: "var(--color-text-primary)",
-                boxSizing: "border-box",
-              }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = "var(--color-accent)"; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = "var(--color-border)"; }}
+              className="w-full pl-[34px] pr-2.5 py-2 border border-[#E8E6E1] rounded-[9px] text-[12.5px] bg-white outline-none text-[#0f0f0f] focus:border-[#E07B20] transition-colors"
             />
           </div>
           <Select value={beltFilter || "all"} onValueChange={(v) => { setBeltFilter(v === "all" ? "" : v); setPage(1); }}>
-            <SelectTrigger style={{ height: 38, border: "1px solid var(--color-border)", borderRadius: 9, fontSize: 12.5, fontFamily: "var(--font-body)", width: 150 }}>
+            <SelectTrigger className="h-[38px] border border-[#E8E6E1] rounded-[9px] text-[12.5px] w-[150px]">
               <SelectValue placeholder={t("prac.filter.belt")} />
             </SelectTrigger>
             <SelectContent>
@@ -399,13 +324,8 @@ function PracsPage() {
         </div>
 
         {/* Table card */}
-        <div style={{
-          background: "var(--color-surface)",
-          borderRadius: "var(--radius-lg)",
-          border: "1px solid var(--color-border)",
-          overflow: "hidden",
-        }}>
-          <table style={{ tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+        <div className="bg-white rounded-[10px] border border-[#E8E6E1] overflow-hidden">
+          <table className="table-fixed w-full border-collapse">
             <colgroup>
               <col style={{ width: "34%" }} />
               <col style={{ width: "21%" }} />
@@ -413,17 +333,17 @@ function PracsPage() {
               <col style={{ width: "31%" }} />
             </colgroup>
             <thead>
-              <tr style={{ background: "#fafaf8", borderBottom: "1px solid var(--color-border-subtle)" }}>
-                <th style={{ padding: "8px 14px", fontSize: 10, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", textAlign: "left" }}>
+              <tr className="bg-[#fafaf8] border-b border-[#ededea]">
+                <th className="px-3.5 py-2 text-[10px] font-semibold text-[#999999] uppercase tracking-[0.07em] text-left">
                   {t("prac.col.name")}
                 </th>
-                <th style={{ padding: "8px 14px", fontSize: 10, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", textAlign: "left" }}>
+                <th className="px-3.5 py-2 text-[10px] font-semibold text-[#999999] uppercase tracking-[0.07em] text-left">
                   {t("prac.col.belt")}
                 </th>
-                <th style={{ padding: "8px 14px", fontSize: 10, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", textAlign: "left" }}>
+                <th className="px-3.5 py-2 text-[10px] font-semibold text-[#999999] uppercase tracking-[0.07em] text-left">
                   Conquistas
                 </th>
-                <th style={{ padding: "8px 18px 8px 14px", fontSize: 10, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", textAlign: "right" }}>
+                <th className="px-3.5 py-2 pr-[18px] text-[10px] font-semibold text-[#999999] uppercase tracking-[0.07em] text-right">
                   {t("prac.col.actions")}
                 </th>
               </tr>
@@ -431,7 +351,7 @@ function PracsPage() {
             <tbody>
               {pageRows.length === 0 && (
                 <tr>
-                  <td colSpan={4} style={{ padding: "32px 14px", textAlign: "center", color: "var(--color-text-muted)", fontSize: 13 }}>
+                  <td colSpan={4} className="py-8 px-3.5 text-center text-[#999999] text-[13px]">
                     {t("prac.empty")}
                   </td>
                 </tr>
@@ -452,26 +372,15 @@ function PracsPage() {
 
           {/* Pagination */}
           {pageCount > 1 && (
-            <div style={{
-              padding: "11px 18px",
-              borderTop: "1px solid var(--color-border-subtle)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}>
-              <span style={{ fontSize: 11.5, color: "var(--color-text-muted)", fontFamily: "var(--font-body)" }}>
+            <div className="px-[18px] py-[11px] border-t border-[#ededea] flex items-center justify-between">
+              <span className="text-[11.5px] text-[#999999]">
                 {filteredByTab.length} de {rows.length} praticantes
               </span>
-              <div style={{ display: "flex", gap: 4 }}>
+              <div className="flex gap-1">
                 <button
                   onClick={() => setPage(Math.max(1, page - 1))}
                   disabled={page <= 1}
-                  style={{
-                    padding: "5px 11px", border: "1px solid var(--color-border)", borderRadius: 7,
-                    background: "var(--color-surface)", fontSize: 12, color: "var(--color-text-secondary)",
-                    fontFamily: "var(--font-body)", cursor: page <= 1 ? "default" : "pointer",
-                    opacity: page <= 1 ? 0.4 : 1,
-                  }}
+                  className="px-[11px] py-[5px] border border-[#E8E6E1] rounded-[7px] bg-white text-[12px] text-[#555555] cursor-pointer disabled:opacity-40 disabled:cursor-default"
                 >
                   ←
                 </button>
@@ -481,13 +390,11 @@ function PracsPage() {
                     <button
                       key={p}
                       onClick={() => setPage(p)}
-                      style={{
-                        padding: "5px 11px", border: "1px solid var(--color-border)", borderRadius: 7,
-                        background: page === p ? "var(--color-text-primary)" : "var(--color-surface)",
-                        color: page === p ? "#ffffff" : "var(--color-text-secondary)",
-                        borderColor: page === p ? "var(--color-text-primary)" : "var(--color-border)",
-                        fontSize: 12, fontFamily: "var(--font-body)", cursor: "pointer",
-                      }}
+                      className={`px-[11px] py-[5px] border rounded-[7px] text-[12px] cursor-pointer transition-colors ${
+                        page === p
+                          ? "bg-[#0f0f0f] border-[#0f0f0f] text-white"
+                          : "bg-white border-[#E8E6E1] text-[#555555]"
+                      }`}
                     >
                       {p}
                     </button>
@@ -496,12 +403,7 @@ function PracsPage() {
                 <button
                   onClick={() => setPage(Math.min(pageCount, page + 1))}
                   disabled={page >= pageCount}
-                  style={{
-                    padding: "5px 11px", border: "1px solid var(--color-border)", borderRadius: 7,
-                    background: "var(--color-surface)", fontSize: 12, color: "var(--color-text-secondary)",
-                    fontFamily: "var(--font-body)", cursor: page >= pageCount ? "default" : "pointer",
-                    opacity: page >= pageCount ? 0.4 : 1,
-                  }}
+                  className="px-[11px] py-[5px] border border-[#E8E6E1] rounded-[7px] bg-white text-[12px] text-[#555555] cursor-pointer disabled:opacity-40 disabled:cursor-default"
                 >
                   →
                 </button>
@@ -561,114 +463,92 @@ function PracRow({
     },
   });
 
-  const rowBg = idx % 2 === 1 ? "#fffcf5" : "var(--color-surface)";
-  const tdBase: React.CSSProperties = {
-    padding: "10px 14px",
-    borderBottom: "1px solid var(--color-border-subtle)",
-    color: "var(--color-text-secondary)",
-    verticalAlign: "middle",
-    fontSize: 12.5,
-  };
-
-  const iconBtn: React.CSSProperties = {
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    color: "var(--color-text-faint)",
-    fontSize: 15,
-    padding: 2,
-    display: "inline-flex",
-    alignItems: "center",
-  };
+  const rowCls = idx % 2 === 1 ? "bg-[#fffcf5]" : "bg-white";
+  const tdCls = "px-3.5 py-2.5 border-b border-[#ededea] text-[#555555] align-middle text-[12.5px]";
+  const iconBtnCls = "bg-transparent border-0 cursor-pointer text-[#bbbbbb] hover:text-[#555555] p-0.5 inline-flex items-center transition-colors";
 
   return (
     <>
-      <tr style={{ background: rowBg }}>
-        <td style={tdBase}>
-          <div>
-            <div style={{ fontWeight: 500, color: "var(--color-text-primary)", fontSize: 12.5 }}>
-              {row.first_name} {row.last_name}
-            </div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--color-text-faint)", marginTop: 1 }}>
-              {row.fp_id}
-            </div>
+      <tr className={rowCls}>
+        <td className={tdCls}>
+          <div className="font-medium text-[#0f0f0f] text-[12.5px]">
+            {row.first_name} {row.last_name}
+          </div>
+          <div className="font-mono text-[10px] text-[#bbbbbb] mt-px">
+            {row.fp_id}
           </div>
         </td>
-        <td style={tdBase}>
+        <td className={tdCls}>
           <PracBeltBadge belt={row.current_belt} />
         </td>
-        <td
-          style={{ ...tdBase, cursor: "pointer" }}
-          onClick={onToggle}
-        >
+        <td className={`${tdCls} cursor-pointer`} onClick={onToggle}>
           {achCount > 0
-            ? <span style={{ fontSize: 11.5, color: "var(--color-accent)", fontWeight: 500 }}>{achCount} conquista{achCount !== 1 ? "s" : ""}</span>
-            : <span style={{ fontSize: 11.5, color: "var(--color-text-muted)" }}>0 registros</span>
+            ? <span className="text-[11.5px] text-[#E07B20] font-medium">{achCount} conquista{achCount !== 1 ? "s" : ""}</span>
+            : <span className="text-[11.5px] text-[#999999]">0 registros</span>
           }
         </td>
-        <td style={{ ...tdBase, textAlign: "right", paddingRight: 14 }}>
-          <div style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>
+        <td className={`${tdCls} text-right pr-3.5`}>
+          <div className="inline-flex gap-2.5 items-center">
             <Link to="/p/$id" params={{ id: row.fp_id }}>
-              <button aria-label="Ver passaporte" style={iconBtn} className="prac-icon-btn">
-                <Eye style={{ width: 15, height: 15 }} />
+              <button aria-label="Ver passaporte" className={iconBtnCls}>
+                <Eye className="w-[15px] h-[15px]" />
               </button>
             </Link>
             <Link to="/painel/conquistas/nova" search={{ person: row.person_id } as any}>
-              <button aria-label="Registrar conquista" style={iconBtn} className="prac-icon-btn">
-                <Award style={{ width: 15, height: 15 }} />
+              <button aria-label="Registrar conquista" className={iconBtnCls}>
+                <Award className="w-[15px] h-[15px]" />
               </button>
             </Link>
             <Link to="/painel/praticantes/$id/editar" params={{ id: row.person_id }}>
-              <button aria-label="Editar" style={iconBtn} className="prac-icon-btn">
-                <Pencil style={{ width: 15, height: 15 }} />
+              <button aria-label="Editar" className={iconBtnCls}>
+                <Pencil className="w-[15px] h-[15px]" />
               </button>
             </Link>
             <button
               aria-label="Excluir"
               onClick={onDelete}
-              style={iconBtn}
-              className="prac-icon-btn prac-icon-btn--delete"
+              className={`${iconBtnCls} hover:text-red-500`}
             >
-              <Trash2 style={{ width: 15, height: 15 }} />
+              <Trash2 className="w-[15px] h-[15px]" />
             </button>
           </div>
         </td>
       </tr>
       {expanded && (
-        <tr style={{ background: "#fafaf8" }}>
-          <td colSpan={4} style={{ padding: "10px 14px 14px", borderBottom: "1px solid var(--color-border-subtle)" }}>
+        <tr className="bg-[#fafaf8]">
+          <td colSpan={4} className="px-3.5 pt-2.5 pb-3.5 border-b border-[#ededea]">
             {!achs ? (
-              <p style={{ fontSize: 12, color: "var(--color-text-muted)" }}>{t("common.loading")}</p>
+              <p className="text-[12px] text-[#999999]">{t("common.loading")}</p>
             ) : achs.length === 0 ? (
-              <p style={{ fontSize: 12, color: "var(--color-text-muted)" }}>{t("prac.exp.empty")}</p>
+              <p className="text-[12px] text-[#999999]">{t("prac.exp.empty")}</p>
             ) : (
-              <table style={{ width: "100%", fontSize: 11.5, borderCollapse: "collapse" }}>
+              <table className="w-full text-[11.5px] border-collapse">
                 <thead>
-                  <tr style={{ color: "var(--color-text-muted)" }}>
-                    <th style={{ padding: "4px 0", fontWeight: 600, textAlign: "left" }}>{t("prac.exp.date")}</th>
-                    <th style={{ padding: "4px 0", fontWeight: 600, textAlign: "left" }}>{t("prac.exp.belt")}</th>
-                    <th style={{ padding: "4px 0", fontWeight: 600, textAlign: "left" }}>{t("prac.exp.gradBy")}</th>
-                    <th style={{ padding: "4px 0", fontWeight: 600, textAlign: "left" }}>{t("prac.exp.hash")}</th>
+                  <tr className="text-[#999999]">
+                    <th className="py-1 font-semibold text-left">{t("prac.exp.date")}</th>
+                    <th className="py-1 font-semibold text-left">{t("prac.exp.belt")}</th>
+                    <th className="py-1 font-semibold text-left">{t("prac.exp.gradBy")}</th>
+                    <th className="py-1 font-semibold text-left">{t("prac.exp.hash")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {achs.map((a: any) => (
                     <tr key={a.id}>
-                      <td style={{ padding: "4px 0", fontVariantNumeric: "tabular-nums" }}>{formatDateBR(a.achieved_at)}</td>
-                      <td style={{ padding: "4px 0" }}><PracBeltBadge belt={a.belt} /></td>
-                      <td style={{ padding: "4px 0" }}>{a.graduated_by}</td>
-                      <td style={{ padding: "4px 0", fontFamily: "var(--font-mono)" }}>
-                        <span style={{ display: "inline-block", maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", verticalAlign: "middle", whiteSpace: "nowrap" }}>
+                      <td className="py-1 tabular-nums">{formatDateBR(a.achieved_at)}</td>
+                      <td className="py-1"><PracBeltBadge belt={a.belt} /></td>
+                      <td className="py-1">{a.graduated_by}</td>
+                      <td className="py-1 font-mono">
+                        <span className="inline-block max-w-[140px] overflow-hidden text-ellipsis align-middle whitespace-nowrap">
                           {a.verification_hash}
                         </span>
                         <button
-                          style={{ marginLeft: 4, verticalAlign: "middle", background: "none", border: "none", cursor: "pointer", color: "var(--color-text-faint)" }}
+                          className="ml-1 align-middle bg-transparent border-0 cursor-pointer text-[#bbbbbb] hover:text-[#555555] transition-colors"
                           onClick={() => {
                             navigator.clipboard.writeText(a.verification_hash);
                             toast.success(t("ach.success.copied"));
                           }}
                         >
-                          <Copy style={{ width: 12, height: 12 }} />
+                          <Copy className="w-3 h-3" />
                         </button>
                       </td>
                     </tr>

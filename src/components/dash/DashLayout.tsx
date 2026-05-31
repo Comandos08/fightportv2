@@ -22,7 +22,7 @@ export function DashLayout({ children }: { children: ReactNode }) {
           </Sheet>
           <span className="ml-3 font-normal tracking-tight [font-family:'Space_Grotesk',sans-serif]">FightPort Admin</span>
         </header>
-        <main className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
+        <main className="flex-1 flex flex-col min-w-0 overflow-x-hidden bg-[#F4F3F0]">
           {children}
         </main>
       </div>
