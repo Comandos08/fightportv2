@@ -9,7 +9,7 @@ import { format } from "date-fns";
 import { useSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
-import { BELT_COLORS, MARTIAL_ARTS, getInitials } from "@/lib/belts";
+import { BELT_COLORS, MARTIAL_ARTS, beltRank, getInitials } from "@/lib/belts";
 import { BeltBadge } from "@/components/BeltBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,11 +73,20 @@ function PracsPage() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return rows.filter((r: any) => {
+    const result = rows.filter((r: any) => {
       if (q && !`${r.first_name} ${r.last_name}`.toLowerCase().includes(q)) return false;
       if (beltFilter && r.current_belt !== beltFilter) return false;
       if (artFilter && r.martial_art !== artFilter) return false;
       return true;
+    });
+    // Sort highest belt first; no-belt rows pinned to the bottom.
+    return result.sort((a: any, b: any) => {
+      const ra = beltRank(a.current_belt);
+      const rb = beltRank(b.current_belt);
+      if (ra === -1 && rb === -1) return 0;
+      if (ra === -1) return 1;
+      if (rb === -1) return -1;
+      return rb - ra;
     });
   }, [rows, search, beltFilter, artFilter]);
 

@@ -293,7 +293,7 @@ const pt: Dict = {
   "prac.filter.art": "Arte marcial",
   "prac.filter.clear": "Limpar filtros",
   "prac.col.name": "Nome",
-  "prac.col.belt": "Faixa atual",
+  "prac.col.belt": "Graduação",
   "prac.col.actions": "Ações",
   "prac.action.viewPassport": "Ver passaporte",
   "prac.action.registerAchievement": "Registrar conquista",
