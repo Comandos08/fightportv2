@@ -19,6 +19,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { BELT_COLORS } from "@/lib/belts";
+import { getBeltTailwindClasses } from "@/components/BeltBadge";
 import { BeltBadge } from "@/components/BeltBadge";
 import { formatDateBR, formatDateBRShort } from "@/lib/utils";
 import { format, subMonths, startOfMonth } from "date-fns";
@@ -144,17 +145,31 @@ function DashboardPage() {
           {beltDist.length === 0 ? (
             <Empty />
           ) : (
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={beltDist} dataKey="value" nameKey="name" outerRadius={80} label>
-                    {beltDist.map((d, i) => (
-                      <Cell key={i} fill={BELT_COLORS[d.name] ?? "var(--muted)"} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+            <div className="flex gap-4 items-start">
+              <div className="h-48 flex-1 min-w-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={beltDist} dataKey="value" nameKey="name" outerRadius={70}>
+                      {beltDist.map((d, i) => (
+                        <Cell key={i} fill={BELT_COLORS[d.name] ?? "#cccccc"} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <ul className="flex flex-col gap-1.5 pt-2 min-w-0 shrink-0">
+                {beltDist.map((d) => {
+                  const { dot } = getBeltTailwindClasses(d.name);
+                  return (
+                    <li key={d.name} className="flex items-center gap-2 text-[11.5px] text-[#555555]">
+                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
+                      <span className="font-medium text-[#0f0f0f]">{d.name}</span>
+                      <span className="text-[#999999] tabular-nums">{d.value}</span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           )}
         </Card>

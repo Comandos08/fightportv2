@@ -5,47 +5,21 @@ import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
 import { beltRank } from "@/lib/belts";
 import { Topbar, TopbarGhostBtn } from "@/components/Topbar";
+import { getBeltTailwindClasses } from "@/components/BeltBadge";
 
 export const Route = createFileRoute("/dash/")({
   component: DashOverview,
 });
 
-function getBeltTokens(belt: string | null | undefined) {
-  const x = (belt ?? "").toLowerCase().trim();
-  if (x.includes("vermelha") || x.includes("red"))
-    return { bg: "var(--color-belt-verm-bg)", text: "var(--color-belt-verm-text)", dot: "var(--color-belt-verm-dot)" };
-  if (x.includes("coral"))
-    return { bg: "var(--color-belt-coral-bg)", text: "var(--color-belt-coral-text)", dot: "var(--color-belt-coral-dot)" };
-  if (x.includes("preta") || x.includes("black"))
-    return { bg: "var(--color-belt-preta-bg)", text: "var(--color-belt-preta-text)", dot: "var(--color-belt-preta-dot)", border: "1px solid #333" };
-  if (x.includes("marrom") || x.includes("brown"))
-    return { bg: "var(--color-belt-marrom-bg)", text: "var(--color-belt-marrom-text)", dot: "var(--color-belt-marrom-dot)" };
-  if (x.includes("roxa") || x.includes("purple"))
-    return { bg: "var(--color-belt-roxa-bg)", text: "var(--color-belt-roxa-text)", dot: "var(--color-belt-roxa-dot)" };
-  if (x.includes("azul") || x.includes("blue"))
-    return { bg: "var(--color-belt-azul-bg)", text: "var(--color-belt-azul-text)", dot: "var(--color-belt-azul-dot)" };
-  if (x.includes("verde") || x.includes("green"))
-    return { bg: "var(--color-belt-verde-bg)", text: "var(--color-belt-verde-text)", dot: "var(--color-belt-verde-dot)" };
-  if (x.includes("laranja") || x.includes("orange"))
-    return { bg: "var(--color-belt-laranja-bg)", text: "var(--color-belt-laranja-text)", dot: "var(--color-belt-laranja-dot)" };
-  if (x.includes("amarela") || x.includes("yellow"))
-    return { bg: "var(--color-belt-amarela-bg)", text: "var(--color-belt-amarela-text)", dot: "var(--color-belt-amarela-dot)" };
-  if (x.includes("cinza") || x.includes("grey") || x.includes("gray"))
-    return { bg: "var(--color-belt-cinza-bg)", text: "var(--color-belt-cinza-text)", dot: "var(--color-belt-cinza-dot)" };
-  return { bg: "var(--color-belt-branca-bg)", text: "var(--color-belt-branca-text)", dot: "var(--color-belt-branca-dot)", border: "1px solid #e5e5e5" };
-}
-
 function DashBeltBadge({ belt }: { belt: string | null | undefined }) {
-  if (!belt) return <span style={{ fontSize: 11, color: "var(--color-text-faint)" }}>—</span>;
-  const tk = getBeltTokens(belt);
+  if (!belt) return <span className="text-[11px] text-[#bbbbbb]">—</span>;
+  const { wrapper, dot, gradientStyle } = getBeltTailwindClasses(belt);
   return (
-    <span style={{
-      display: "inline-flex", alignItems: "center", gap: 5,
-      padding: "3px 9px 3px 7px", borderRadius: 20,
-      fontSize: 11, fontWeight: 500, whiteSpace: "nowrap",
-      background: tk.bg, color: tk.text, border: tk.border ?? "none",
-    }}>
-      <span style={{ width: 7, height: 7, borderRadius: "50%", background: tk.dot, flexShrink: 0 }} />
+    <span
+      className={`inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[20px] text-[11px] font-medium whitespace-nowrap ${wrapper}`}
+      style={gradientStyle ? { background: gradientStyle } : undefined}
+    >
+      <span className={`w-[7px] h-[7px] rounded-full flex-shrink-0 ${dot}`} />
       {belt}
     </span>
   );
@@ -98,33 +72,9 @@ function DashOverview() {
   const totalCredits = useMemo(() => topOrgs.reduce((s, x) => s + (Number(x.balance) || 0), 0), [topOrgs]);
   const topCreditOrgs = topOrgs.slice(0, 2);
 
-  const cardBase: React.CSSProperties = {
-    background: "var(--color-surface)",
-    borderRadius: "var(--radius-md)",
-    padding: 16,
-    border: "1px solid var(--color-border)",
-  };
-
-  const sectionCard: React.CSSProperties = {
-    background: "var(--color-surface)",
-    borderRadius: "var(--radius-lg)",
-    border: "1px solid var(--color-border)",
-    overflow: "hidden",
-  };
-
-  const thStyle: React.CSSProperties = {
-    background: "#fafaf8",
-    fontSize: 10, fontWeight: 600, color: "var(--color-text-muted)",
-    textTransform: "uppercase", padding: "8px 14px", textAlign: "left",
-    letterSpacing: "0.05em",
-  };
-  const tdStyle: React.CSSProperties = {
-    padding: "10px 14px",
-    borderBottom: "1px solid var(--color-border-subtle)",
-    fontSize: 12.5,
-    color: "var(--color-text-secondary)",
-    verticalAlign: "middle",
-  };
+  const sectionCardCls = "bg-white rounded-[10px] border border-[#E8E6E1] overflow-hidden";
+  const thCls = "bg-[#fafaf8] text-[10px] font-semibold text-[#999999] uppercase tracking-[0.07em] px-3.5 py-2 text-left";
+  const tdCls = "px-3.5 py-2.5 border-b border-[#ededea] text-[12.5px] text-[#555555] align-middle";
 
   function orgStatusDot(status: string, balance: number): { color: string; label: string } {
     if (balance <= 0) return { color: "#e53e3e", label: "Sem créditos" };
@@ -152,63 +102,63 @@ function DashOverview() {
         </TopbarGhostBtn>
       </Topbar>
 
-      <div style={{ padding: "20px 24px", background: "var(--color-page-bg)" }}>
+      <div className="p-5 px-6">
 
         {/* KPI row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 10, marginBottom: 18 }}>
+        <div className="grid grid-cols-4 gap-2.5 mb-[18px]">
           {/* Organizações */}
-          <div style={cardBase}>
-            <div style={{ fontSize: 10.5, fontWeight: 500, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div className="bg-white border border-[#E8E6E1] rounded-[10px] p-4">
+            <div className="text-[10.5px] font-medium text-[#999999] uppercase tracking-[0.07em] mb-2">
               {t("dash.kpi.orgs")}
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 400, color: "var(--color-text-primary)", letterSpacing: "-0.5px", lineHeight: 1 }}>
+            <div className="[font-family:'Space_Grotesk',sans-serif] font-bold text-[26px] text-[#0f0f0f] tracking-[-0.5px] leading-none">
               {o.schools_total ?? 0}
             </div>
             {schoolsDelta != null && (
-              <div style={{ fontSize: 11, marginTop: 5, display: "flex", alignItems: "center", gap: 4, color: schoolsDelta >= 0 ? "#22a05a" : "var(--color-text-muted)" }}>
-                {schoolsDelta >= 0 && <TrendingUp style={{ width: 12, height: 12 }} />}
+              <div className={`text-[11px] mt-1.5 flex items-center gap-1 ${schoolsDelta >= 0 ? "text-[#22a05a]" : "text-[#999999]"}`}>
+                {schoolsDelta >= 0 && <TrendingUp className="w-3 h-3" />}
                 {schoolsDelta >= 0 ? "+" : ""}{schoolsDelta} vs mês anterior
               </div>
             )}
           </div>
 
           {/* Atletas */}
-          <div style={cardBase}>
-            <div style={{ fontSize: 10.5, fontWeight: 500, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div className="bg-white border border-[#E8E6E1] rounded-[10px] p-4">
+            <div className="text-[10.5px] font-medium text-[#999999] uppercase tracking-[0.07em] mb-2">
               {t("dash.kpi.athletes")}
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 400, color: "var(--color-text-primary)", letterSpacing: "-0.5px", lineHeight: 1 }}>
+            <div className="[font-family:'Space_Grotesk',sans-serif] font-bold text-[26px] text-[#0f0f0f] tracking-[-0.5px] leading-none">
               {o.people_total ?? 0}
             </div>
             {peopleDelta != null && (
-              <div style={{ fontSize: 11, marginTop: 5, display: "flex", alignItems: "center", gap: 4, color: peopleDelta >= 0 ? "#22a05a" : "var(--color-text-muted)" }}>
-                {peopleDelta >= 0 && <TrendingUp style={{ width: 12, height: 12 }} />}
+              <div className={`text-[11px] mt-1.5 flex items-center gap-1 ${peopleDelta >= 0 ? "text-[#22a05a]" : "text-[#999999]"}`}>
+                {peopleDelta >= 0 && <TrendingUp className="w-3 h-3" />}
                 {peopleDelta >= 0 ? "+" : ""}{peopleDelta} vs mês anterior
               </div>
             )}
           </div>
 
           {/* Graduações */}
-          <div style={cardBase}>
-            <div style={{ fontSize: 10.5, fontWeight: 500, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div className="bg-white border border-[#E8E6E1] rounded-[10px] p-4">
+            <div className="text-[10.5px] font-medium text-[#999999] uppercase tracking-[0.07em] mb-2">
               {t("dash.kpi.achievements")}
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 400, color: "var(--color-text-primary)", letterSpacing: "-0.5px", lineHeight: 1 }}>
+            <div className="[font-family:'Space_Grotesk',sans-serif] font-bold text-[26px] text-[#0f0f0f] tracking-[-0.5px] leading-none">
               {o.achievements_month ?? 0}
             </div>
-            <div style={{ fontSize: 11, marginTop: 5, color: "var(--color-text-muted)" }}>este mês</div>
+            <div className="text-[11px] mt-1.5 text-[#999999]">este mês</div>
           </div>
 
           {/* Créditos em circulação — inverted card */}
-          <div style={{ ...cardBase, background: "var(--color-text-primary)", borderColor: "var(--color-text-primary)" }}>
-            <div style={{ fontSize: 10.5, fontWeight: 500, color: "#666666", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: 8 }}>
+          <div className="bg-[#0f0f0f] border border-[#0f0f0f] rounded-[10px] p-4">
+            <div className="text-[10.5px] font-medium text-[#666666] uppercase tracking-[0.07em] mb-2">
               Créditos circulação
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 400, color: "var(--color-accent)", letterSpacing: "-0.5px", lineHeight: 1 }}>
+            <div className="[font-family:'Space_Grotesk',sans-serif] font-bold text-[26px] text-[#E07B20] tracking-[-0.5px] leading-none">
               {totalCredits.toLocaleString("pt-BR")}
             </div>
             {topCreditOrgs.length > 0 && (
-              <div style={{ fontSize: 11, marginTop: 5, color: "#555555" }}>
+              <div className="text-[11px] mt-1.5 text-[#555555]">
                 {topCreditOrgs.map((o: any) => `${o.name?.split(" ")[0] ?? "—"}: ${o.balance ?? 0}`).join(" · ")}
               </div>
             )}
@@ -216,42 +166,42 @@ function DashOverview() {
         </div>
 
         {/* Main content — 2 column */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 12, marginBottom: 14 }}>
+        <div className="grid gap-3 mb-3.5" style={{ gridTemplateColumns: "1.4fr 1fr" }}>
 
           {/* Left — Atletas mais graduados */}
-          <div style={sectionCard}>
-            <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--color-border-subtle)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: 13.5, fontWeight: 400, color: "var(--color-text-primary)" }}>
+          <div className={sectionCardCls}>
+            <div className="px-[18px] py-3.5 border-b border-[#ededea] flex justify-between items-center">
+              <span className="[font-family:'Space_Grotesk',sans-serif] text-[13.5px] font-normal text-[#0f0f0f]">
                 Atletas mais graduados
               </span>
-              <Link to="/dash/atletas" style={{ fontSize: 11.5, color: "var(--color-accent)", fontWeight: 500, textDecoration: "none" }}>
+              <Link to="/dash/atletas" className="text-[11.5px] text-[#E07B20] font-medium no-underline">
                 Ver todos →
               </Link>
             </div>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th style={thStyle}>Atleta</th>
-                  <th style={thStyle}>Organização</th>
-                  <th style={thStyle}>Graduação</th>
+                  <th className={thCls}>Atleta</th>
+                  <th className={thCls}>Organização</th>
+                  <th className={thCls}>Graduação</th>
                 </tr>
               </thead>
               <tbody>
                 {topAthletes.length === 0 && (
-                  <tr><td colSpan={3} style={{ ...tdStyle, textAlign: "center", color: "var(--color-text-faint)" }}>—</td></tr>
+                  <tr><td colSpan={3} className={`${tdCls} text-center text-[#bbbbbb]`}>—</td></tr>
                 )}
                 {topAthletes.map((ath: any, i: number) => (
-                  <tr key={ath.id ?? i} style={{ background: i % 2 === 1 ? "#fffcf5" : "var(--color-surface)" }}>
-                    <td style={tdStyle}>
-                      <div style={{ fontWeight: 500, color: "var(--color-text-primary)", fontSize: 12.5 }}>
+                  <tr key={ath.id ?? i} className={i % 2 === 1 ? "bg-[#fffcf5]" : "bg-white"}>
+                    <td className={tdCls}>
+                      <div className="font-medium text-[#0f0f0f] text-[12.5px]">
                         {ath.first_name} {ath.last_name}
                       </div>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--color-text-faint)", marginTop: 1 }}>
+                      <div className="font-mono text-[10px] text-[#bbbbbb] mt-px">
                         {ath.fp_id}
                       </div>
                     </td>
-                    <td style={{ ...tdStyle, fontSize: 12 }}>{ath.school_name ?? ath.org ?? "—"}</td>
-                    <td style={tdStyle}>
+                    <td className={`${tdCls} text-[12px]`}>{ath.school_name ?? ath.org ?? "—"}</td>
+                    <td className={tdCls}>
                       <DashBeltBadge belt={ath.current_belt ?? ath.belt} />
                     </td>
                   </tr>
@@ -261,12 +211,12 @@ function DashOverview() {
           </div>
 
           {/* Right — Organizações */}
-          <div style={sectionCard}>
-            <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--color-border-subtle)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: 13.5, fontWeight: 400, color: "var(--color-text-primary)" }}>
+          <div className={sectionCardCls}>
+            <div className="px-[18px] py-3.5 border-b border-[#ededea] flex justify-between items-center">
+              <span className="[font-family:'Space_Grotesk',sans-serif] text-[13.5px] font-normal text-[#0f0f0f]">
                 Organizações
               </span>
-              <Link to="/dash/organizacoes" style={{ fontSize: 11.5, color: "var(--color-accent)", fontWeight: 500, textDecoration: "none" }}>
+              <Link to="/dash/organizacoes" className="text-[11.5px] text-[#E07B20] font-medium no-underline">
                 Ver todas →
               </Link>
             </div>
@@ -275,76 +225,60 @@ function DashOverview() {
               return (
                 <div
                   key={org.id ?? i}
-                  style={{
-                    padding: "11px 18px",
-                    borderBottom: i < topOrgs.length - 1 ? "1px solid var(--color-border-subtle)" : "none",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+                  className={`px-[18px] py-[11px] flex justify-between items-center ${i < topOrgs.length - 1 ? "border-b border-[#ededea]" : ""}`}
                 >
                   <div>
-                    <div style={{ fontSize: 12.5, fontWeight: 500, color: "var(--color-text-primary)" }}>{org.name}</div>
-                    <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 3, display: "flex", alignItems: "center", gap: 5 }}>
-                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: dotColor, flexShrink: 0 }} />
+                    <div className="text-[12.5px] font-medium text-[#0f0f0f]">{org.name}</div>
+                    <div className="text-[11px] text-[#999999] mt-[3px] flex items-center gap-[5px]">
+                      <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: dotColor }} />
                       {statusLabel}
                       {org.athletes_count != null && ` · ${org.athletes_count} atletas`}
                     </div>
                   </div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 500, color: "var(--color-text-secondary)" }}>
+                  <div className="font-mono text-[12px] font-medium text-[#555555]">
                     {(Number(org.balance) || 0).toLocaleString("pt-BR")}
                   </div>
                 </div>
               );
             })}
             {topOrgs.length === 0 && (
-              <div style={{ padding: "24px 18px", textAlign: "center", color: "var(--color-text-faint)", fontSize: 12 }}>—</div>
+              <div className="px-[18px] py-6 text-center text-[#bbbbbb] text-[12px]">—</div>
             )}
           </div>
         </div>
 
         {/* Atividade recente */}
-        <div style={sectionCard}>
-          <div style={{ padding: "14px 18px", borderBottom: "1px solid var(--color-border-subtle)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 13.5, fontWeight: 400, color: "var(--color-text-primary)" }}>
+        <div className={sectionCardCls}>
+          <div className="px-[18px] py-3.5 border-b border-[#ededea] flex justify-between items-center">
+            <span className="[font-family:'Space_Grotesk',sans-serif] text-[13.5px] font-normal text-[#0f0f0f]">
               Atividade recente
             </span>
-            <span style={{ fontSize: 11.5, color: "var(--color-text-muted)", fontWeight: 500 }}>Ver auditoria →</span>
+            <span className="text-[11.5px] text-[#999999] font-medium">Ver auditoria →</span>
           </div>
           {recentActivity.length === 0 ? (
-            <div style={{ padding: "24px", textAlign: "center", color: "var(--color-text-faint)", fontSize: 12 }}>
+            <div className="p-6 text-center text-[#bbbbbb] text-[12px]">
               Sem atividade registrada
             </div>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <div className="grid grid-cols-2">
               {recentActivity.slice(0, 4).map((ev: any, i: number) => {
                 const { bg, color, icon } = activityIcon(ev);
-                const hasRightBorder = i % 2 === 0;
-                const hasBottomBorder = i < 2;
                 return (
                   <div
                     key={ev.id ?? i}
-                    style={{
-                      padding: "12px 18px",
-                      borderRight: hasRightBorder ? "1px solid var(--color-border-subtle)" : "none",
-                      borderBottom: hasBottomBorder ? "1px solid var(--color-border-subtle)" : "none",
-                      display: "flex",
-                      gap: 12,
-                      alignItems: "flex-start",
-                    }}
+                    className={`px-[18px] py-3 flex gap-3 items-start ${i % 2 === 0 ? "border-r border-[#ededea]" : ""} ${i < 2 ? "border-b border-[#ededea]" : ""}`}
                   >
-                    <div style={{
-                      width: 30, height: 30, borderRadius: 9,
-                      background: bg, color, fontSize: 14,
-                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                    }}>
+                    <div
+                      className="w-[30px] h-[30px] rounded-[9px] flex items-center justify-center text-[14px] flex-shrink-0"
+                      style={{ background: bg, color }}
+                    >
                       {icon}
                     </div>
                     <div>
-                      <div style={{ fontSize: 12.5, fontWeight: 500, color: "var(--color-text-primary)", lineHeight: 1.3 }}>
+                      <div className="text-[12.5px] font-medium text-[#0f0f0f] leading-[1.3]">
                         {ev.description ?? ev.event_type ?? ev.type ?? "Evento"}
                       </div>
-                      <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginTop: 3 }}>
+                      <div className="text-[11px] text-[#999999] mt-[3px]">
                         {ev.created_at ? new Date(ev.created_at).toLocaleDateString("pt-BR") : "—"}
                         {ev.actor_name ? ` · ${ev.actor_name}` : ""}
                       </div>
