@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
+import { Topbar } from "@/components/Topbar";
 import {
   PieChart,
   Pie,
@@ -51,7 +52,29 @@ function DashboardPage() {
     },
   });
 
-  if (!data) return <p className="text-sm text-muted-foreground">{t("common.loading")}</p>;
+  const { data: schoolMeta } = useQuery({
+    queryKey: ["school-meta", schoolId],
+    enabled: !!schoolId,
+    queryFn: async () => {
+      const res = await db.from("schools").select("name,martial_art,city,state").eq("id", schoolId).maybeSingle();
+      return res.data ?? null;
+    },
+  });
+
+  const topbarSubtitle = [
+    schoolMeta?.name,
+    schoolMeta?.martial_art,
+    [schoolMeta?.city, schoolMeta?.state].filter(Boolean).join(" — "),
+  ].filter(Boolean).join(" · ");
+
+  if (!data) return (
+    <>
+      <Topbar title={t("panel.nav.dashboard")} subtitle={topbarSubtitle} />
+      <div style={{ padding: "20px 24px" }}>
+        <p className="text-sm text-muted-foreground">{t("common.loading")}</p>
+      </div>
+    </>
+  );
 
   const beltDist = Object.entries(
     (data.people as any[]).reduce<Record<string, number>>((acc: Record<string, number>, p: any) => {
@@ -80,8 +103,10 @@ function DashboardPage() {
   const lastGrad = data.achievements[0];
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t("panel.nav.dashboard")}</h1>
+    <>
+    <Topbar title={t("panel.nav.dashboard")} subtitle={topbarSubtitle} />
+    <div className="space-y-6" style={{ padding: "20px 24px" }}>
+
 
       {data.balance === 0 && (
         <div className="rounded-md border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
@@ -185,6 +210,7 @@ function DashboardPage() {
         )}
       </Card>
     </div>
+    </>
   );
 }
 

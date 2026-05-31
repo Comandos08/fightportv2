@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Topbar } from "@/components/Topbar";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -246,10 +247,9 @@ function NewAchPage() {
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">{t("ach.title")}</h1>
-      </div>
+    <>
+    <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
+    <div className="max-w-4xl space-y-6" style={{ padding: "20px 24px" }}>
       <div className="rounded-md bg-muted/60 border border-border px-4 py-3 text-sm">
         {t("ach.banner.balance", { n: balance })}
       </div>
@@ -381,5 +381,6 @@ function NewAchPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+    </>
   );
 }

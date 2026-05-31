@@ -26,7 +26,7 @@ export function DashLayout({ children }: { children: ReactNode }) {
           </div>
           <div className="hidden lg:flex"><ThemeToggle /></div>
         </header>
-        <main className="flex-1 px-4 py-6 sm:px-8 sm:py-8 max-w-full overflow-x-hidden">
+        <main className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
           {children}
         </main>
       </div>

@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
-import { DashPageHeader, DashTable, DashFiltersBar, DashSearch, DashPagination, DashTableSkeleton } from "@/components/dash/DashCommon";
+import { DashTable, DashFiltersBar, DashSearch, DashPagination, DashTableSkeleton } from "@/components/dash/DashCommon";
+import { Topbar } from "@/components/Topbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MARTIAL_ARTS } from "@/lib/belts";
 import { Button } from "@/components/ui/button";
@@ -58,8 +59,9 @@ function AthletesPage() {
   }, [search, art, belt, page]);
 
   return (
-    <div>
-      <DashPageHeader title={t("dash.ath.title")} />
+    <>
+      <Topbar title={t("dash.ath.title")} subtitle={total > 0 ? `${total} atletas na plataforma` : undefined} />
+      <div style={{ padding: "20px 24px" }}>
       <DashFiltersBar>
         <DashSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} />
         <Select value={art} onValueChange={(v) => { setArt(v); setPage(1); }}>
@@ -104,6 +106,7 @@ function AthletesPage() {
         )}
       </div>
       <DashPagination page={page} pageSize={PAGE_SIZE} total={total} onPageChange={setPage} />
-    </div>
+      </div>
+    </>
   );
 }
