@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { useSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
-import { BELT_COLORS } from "@/lib/belts";
+import { BELTS, beltCssColor } from "@/lib/belts";
 import { BeltBadge } from "@/components/BeltBadge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,8 +28,6 @@ import {
 import { notify } from "@/lib/notifications";
 import { formatDateBR } from "@/lib/utils";
 
-const BASIC = ["Branca", "Cinza", "Amarela", "Laranja", "Verde", "Azul", "Roxa", "Marrom"];
-const BLACK = ["Preta", "Coral", "Vermelha"];
 
 export const Route = createFileRoute("/painel/conquistas/nova")({
   validateSearch: (s: Record<string, unknown>) => ({ person: (s.person as string) ?? "" }),
@@ -328,13 +326,13 @@ function NewAchPage() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>{t("ach.field.belt.basic")}</SelectLabel>
-                  {BASIC.map((b) => (
+                  {BELTS.slice(0, 8).map((b) => (
                     <SelectItem key={b} value={b}>{b}</SelectItem>
                   ))}
                 </SelectGroup>
                 <SelectGroup>
                   <SelectLabel>{t("ach.field.belt.black")}</SelectLabel>
-                  {BLACK.map((b) => (
+                  {BELTS.slice(8).map((b) => (
                     <SelectItem key={b} value={b}>{b}</SelectItem>
                   ))}
                 </SelectGroup>
@@ -371,7 +369,7 @@ function NewAchPage() {
               <div className="text-lg font-bold">{selectedPerson ? `${selectedPerson.people.first_name} ${selectedPerson.people.last_name}` : search}</div>
               <BeltBadge belt={belt} />
               <div className="text-xs text-muted-foreground">{formatDateBR(date)} · {gradBy}</div>
-              <div className="h-2 w-full rounded" style={{ backgroundColor: BELT_COLORS[belt] }} />
+              <div className="h-2 w-full rounded" style={{ background: beltCssColor(belt) }} />
             </div>
           )}
         </div>
