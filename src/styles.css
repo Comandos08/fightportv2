@@ -138,9 +138,65 @@
   --fp-accent: oklch(0.76 0.18 70);
   --fp-accent-strong: oklch(0.68 0.2 65);
   --color-bg-soft: var(--fp-bg-soft);
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Page layout */
+  --color-page-bg: #F4F3F0;
+  --color-surface: #ffffff;
+  --color-border-subtle: #ededea;
+
+  /* Text hierarchy */
+  --color-text-primary: #0d0d0d;
+  --color-text-secondary: #3d3d3d;
+  --color-text-muted: #888888;
+  --color-text-faint: #b0b0b0;
+
+  /* Accent — amber orange */
+  --color-accent: #E07B20;
+  --color-accent-hover: #c96c15;
+  --color-accent-dim: #fef3e6;
+
+  /* Belt badge semantic tokens */
+  --color-belt-preta-bg: #1a1a1a;
+  --color-belt-preta-text: #f5f5f5;
+  --color-belt-preta-dot: #888888;
+  --color-belt-roxa-bg: #f0ebfe;
+  --color-belt-roxa-text: #5b21b6;
+  --color-belt-roxa-dot: #7c3aed;
+  --color-belt-azul-bg: #dbeafe;
+  --color-belt-azul-text: #1d4ed8;
+  --color-belt-azul-dot: #2563eb;
+  --color-belt-marrom-bg: #f5ece3;
+  --color-belt-marrom-text: #78350f;
+  --color-belt-marrom-dot: #92400e;
+  --color-belt-branca-bg: #f9f9f9;
+  --color-belt-branca-text: #444444;
+  --color-belt-branca-dot: #cccccc;
+  --color-belt-verde-bg: #dcfce7;
+  --color-belt-verde-text: #166534;
+  --color-belt-verde-dot: #16a34a;
+  --color-belt-amarela-bg: #fef9c3;
+  --color-belt-amarela-text: #713f12;
+  --color-belt-amarela-dot: #ca8a04;
+  --color-belt-laranja-bg: #ffedd5;
+  --color-belt-laranja-text: #9a3412;
+  --color-belt-laranja-dot: #ea580c;
+  --color-belt-cinza-bg: #f3f4f6;
+  --color-belt-cinza-text: #4b5563;
+  --color-belt-cinza-dot: #9ca3af;
+  --color-belt-verm-bg: #fee2e2;
+  --color-belt-verm-text: #991b1b;
+  --color-belt-verm-dot: #dc2626;
+  --color-belt-coral-bg: #fff1f2;
+  --color-belt-coral-text: #be123c;
+  --color-belt-coral-dot: #f43f5e;
+
+  /* Belt color primitives */
   --belt-white: #ffffff;
   --belt-grey: #9ca3af;
   --belt-yellow: #fcd34d;
@@ -159,12 +215,16 @@
   * { border-color: var(--color-border); }
   html { scroll-behavior: smooth; }
   body {
-    font-family: var(--font-sans);
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    font-family: var(--font-body);
+    background-color: var(--color-page-bg);
+    color: var(--color-text-primary);
   }
 }
 .font-mono { font-family: var(--font-mono); }
+.topbar-ghost-btn:hover { background: var(--color-border-subtle) !important; }
+.topbar-primary-link:hover { background: var(--color-accent-hover) !important; }
+.prac-icon-btn:hover { color: var(--color-text-primary) !important; }
+.prac-icon-btn--delete:hover { color: #dc2626 !important; }
 .fp-container { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1rem; }
 @media (min-width: 640px) { .fp-container { padding-inline: 1.5rem; } }
 @media (min-width: 1024px) { .fp-container { padding-inline: 2rem; } }

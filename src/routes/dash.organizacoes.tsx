@@ -6,7 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DashPageHeader, DashTable, DashFiltersBar, DashSearch, DashPagination, DashTableSkeleton } from "@/components/dash/DashCommon";
+import { DashTable, DashFiltersBar, DashSearch, DashPagination, DashTableSkeleton } from "@/components/dash/DashCommon";
+import { Topbar, TopbarGhostBtn } from "@/components/Topbar";
 import { MARTIAL_ARTS } from "@/lib/belts";
 import { Download } from "lucide-react";
 
@@ -86,11 +87,14 @@ function OrgsPage() {
   ], [t]);
 
   return (
-    <div>
-      <DashPageHeader
-        title={t("dash.orgs.title")}
-        actions={<Button variant="outline" size="sm" onClick={exportCsv}><Download className="h-4 w-4 mr-2" />{t("dash.export.csv")}</Button>}
-      />
+    <>
+      <Topbar title={t("dash.orgs.title")} subtitle={total > 0 ? `${total} organizações cadastradas` : undefined}>
+        <TopbarGhostBtn onClick={exportCsv}>
+          <Download className="h-3 w-3" />
+          {t("dash.export.csv")}
+        </TopbarGhostBtn>
+      </Topbar>
+      <div style={{ padding: "20px 24px" }}>
       <DashFiltersBar>
         <DashSearch value={search} onChange={(v) => { setSearch(v); setPage(1); }} />
         <Select value={art} onValueChange={(v) => { setArt(v); setPage(1); }}>
@@ -134,6 +138,7 @@ function OrgsPage() {
         )}
       </div>
       <DashPagination page={page} pageSize={PAGE_SIZE} total={total} onPageChange={setPage} />
-    </div>
+      </div>
+    </>
   );
 }
