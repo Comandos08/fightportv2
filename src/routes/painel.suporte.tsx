@@ -96,7 +96,7 @@ function SupportPage() {
         </button>
       </Topbar>
 
-      <div className="p-5 px-6 flex-1 space-y-4">
+      <div className="px-6 py-5 flex-1 space-y-4 bg-[#F4F3F0]">
         <div className="flex items-center gap-2">
           <Select value={filter} onValueChange={(v) => setFilter(v as Filter)}>
             <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
