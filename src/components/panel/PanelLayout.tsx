@@ -7,12 +7,12 @@ export function PanelLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="min-h-screen flex w-full bg-background">
-      <aside className="hidden lg:flex w-[240px] shrink-0 border-r border-border">
+      <aside className="hidden lg:flex w-[240px] shrink-0 border-r border-[#1f1f1f]">
         <PanelSidebar />
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="lg:hidden h-14 flex items-center px-4 border-b border-border">
+        <header className="lg:hidden h-14 flex items-center px-4 border-b border-border bg-background">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger className="p-2 -ml-2">
               <Menu className="h-5 w-5" />
@@ -21,7 +21,7 @@ export function PanelLayout({ children }: { children: ReactNode }) {
               <PanelSidebar onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
-          <span className="ml-3 font-bold tracking-tight">FightPort</span>
+          <span className="ml-3 font-normal tracking-tight [font-family:'Space_Grotesk',sans-serif]">FightPort</span>
         </header>
 
         <main className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
