@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Topbar } from "@/components/Topbar";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -87,8 +88,9 @@ function CreditsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">{t("cred.title")}</h1>
+    <>
+      <Topbar title={t("cred.title")} subtitle="Saldo atual e histórico de transações" />
+      <div className="p-5 px-6 flex-1 space-y-6">
       <CreditBalance balance={balance} />
 
       <div className="flex items-center gap-2 text-sm">
@@ -198,6 +200,7 @@ function CreditsPage() {
           </table>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

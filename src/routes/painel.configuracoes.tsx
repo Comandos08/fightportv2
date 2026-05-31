@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Topbar } from "@/components/Topbar";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useSession } from "@/lib/auth";
@@ -83,8 +84,10 @@ function ConfigPage() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
-      <h1 className="text-2xl font-bold">{t("cfg.title")}</h1>
+    <>
+      <Topbar title={t("cfg.title")} subtitle="Escola, Head Coach e conta" />
+      <div className="p-5 px-6 flex-1">
+      <div className="max-w-2xl space-y-6">
 
       <Tabs defaultValue="school">
         <TabsList>
@@ -163,6 +166,8 @@ function ConfigPage() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+      </div>
+    </>
   );
 }

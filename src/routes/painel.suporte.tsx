@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Topbar } from "@/components/Topbar";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -84,10 +85,19 @@ function SupportPage() {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">{t("sup.title")}</h1>
-        <div className="flex gap-2">
+    <>
+      <Topbar title={t("sup.title")} subtitle="Abra e acompanhe seus tickets">
+        <button
+          onClick={() => setOpenNew(true)}
+          className="bg-[#E07B20] text-black font-semibold text-[12px] px-4 py-1.5 rounded-lg hover:bg-[#F5A623] transition-colors inline-flex items-center gap-1.5"
+        >
+          <Plus className="h-3 w-3" />
+          {t("sup.new")}
+        </button>
+      </Topbar>
+
+      <div className="p-5 px-6 flex-1 space-y-4">
+        <div className="flex items-center gap-2">
           <Select value={filter} onValueChange={(v) => setFilter(v as Filter)}>
             <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
             <SelectContent>
@@ -96,14 +106,9 @@ function SupportPage() {
               <SelectItem value="resolved">{t("sup.filter.resolved")}</SelectItem>
             </SelectContent>
           </Select>
-          <Button size="sm" onClick={() => setOpenNew(true)}>
-            <Plus className="h-4 w-4 mr-1" />
-            {t("sup.new")}
-          </Button>
         </div>
-      </div>
 
-      <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
         <div className={`${selectedId ? "hidden md:block" : ""} rounded-lg border border-border bg-card overflow-hidden`}>
           {filtered.length === 0 ? (
             <p className="p-6 text-sm text-muted-foreground">{t("sup.list.empty")}</p>
@@ -154,10 +159,11 @@ function SupportPage() {
             <Thread ticketId={selectedId} onBack={() => setSelectedId(null)} />
           )}
         </div>
-      </div>
+        </div>
 
-      <NewTicketDialog open={openNew} onOpenChange={setOpenNew} />
-    </div>
+        <NewTicketDialog open={openNew} onOpenChange={setOpenNew} />
+      </div>
+    </>
   );
 }
 

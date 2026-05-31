@@ -194,7 +194,10 @@ function NewAchPage() {
 
   if (success) {
     return (
-      <div className="max-w-xl space-y-6">
+      <>
+        <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
+        <div className="p-5 px-6 flex-1">
+        <div className="max-w-xl space-y-6">
         <div className="rounded-lg border border-border bg-card p-6 text-center">
           <h1 className="text-2xl font-bold">{t("ach.success.title")}</h1>
           <p className="mt-2 text-sm text-muted-foreground">{t("ach.success.hash")}</p>
@@ -226,30 +229,36 @@ function NewAchPage() {
             </Button>
           </div>
         </div>
-      </div>
+        </div>
+        </div>
+        </>
     );
   }
 
   if (balance === 0) {
     return (
-      <div className="max-w-xl">
-        <h1 className="text-2xl font-bold mb-4">{t("ach.title")}</h1>
-        <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-6 text-center">
-          <p className="mb-4">{t("ach.banner.zero")}</p>
-          <Link to="/painel/creditos">
-            <Button className="bg-amber-500 hover:bg-amber-600 text-black">
-              {t("dash.credits.buyMore")}
-            </Button>
-          </Link>
+      <>
+        <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
+        <div className="p-5 px-6 flex-1">
+          <div className="max-w-xl">
+            <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-6 text-center">
+              <p className="mb-4">{t("ach.banner.zero")}</p>
+              <Link to="/painel/creditos">
+                <Button className="bg-amber-500 hover:bg-amber-600 text-black">
+                  {t("dash.credits.buyMore")}
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <>
     <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
-    <div className="max-w-4xl space-y-6" style={{ padding: "20px 24px" }}>
+    <div className="max-w-4xl space-y-6 p-5 px-6">
       <div className="rounded-md bg-muted/60 border border-border px-4 py-3 text-sm">
         {t("ach.banner.balance", { n: balance })}
       </div>
