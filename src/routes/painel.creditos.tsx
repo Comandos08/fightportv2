@@ -90,7 +90,7 @@ function CreditsPage() {
   return (
     <>
       <Topbar title={t("cred.title")} subtitle="Saldo atual e histórico de transações" />
-      <div className="p-5 px-6 flex-1 space-y-6">
+      <div className="px-6 py-5 flex-1 space-y-6 bg-[#F4F3F0]">
       <CreditBalance balance={balance} />
 
       <div className="flex items-center gap-2 text-sm">

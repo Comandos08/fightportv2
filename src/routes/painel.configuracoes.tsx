@@ -86,7 +86,7 @@ function ConfigPage() {
   return (
     <>
       <Topbar title={t("cfg.title")} subtitle="Escola, Head Coach e conta" />
-      <div className="p-5 px-6 flex-1">
+      <div className="px-6 py-5 flex-1 bg-[#F4F3F0]">
       <div className="max-w-2xl space-y-6">
 
       <Tabs defaultValue="school">

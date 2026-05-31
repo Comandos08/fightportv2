@@ -196,7 +196,7 @@ function NewAchPage() {
     return (
       <>
         <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
-        <div className="p-5 px-6 flex-1">
+        <div className="px-6 py-5 flex-1 bg-[#F4F3F0]">
         <div className="max-w-xl space-y-6">
         <div className="rounded-lg border border-border bg-card p-6 text-center">
           <h1 className="text-2xl font-bold">{t("ach.success.title")}</h1>
@@ -239,7 +239,7 @@ function NewAchPage() {
     return (
       <>
         <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
-        <div className="p-5 px-6 flex-1">
+        <div className="px-6 py-5 flex-1 bg-[#F4F3F0]">
           <div className="max-w-xl">
             <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-6 text-center">
               <p className="mb-4">{t("ach.banner.zero")}</p>
@@ -258,7 +258,7 @@ function NewAchPage() {
   return (
     <>
     <Topbar title={t("ach.title")} subtitle="Registrar graduação de atleta" />
-    <div className="max-w-4xl space-y-6 p-5 px-6">
+    <div className="max-w-4xl space-y-6 px-6 py-5 bg-[#F4F3F0] flex-1">
       <div className="rounded-md bg-muted/60 border border-border px-4 py-3 text-sm">
         {t("ach.banner.balance", { n: balance })}
       </div>
