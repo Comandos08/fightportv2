@@ -96,6 +96,7 @@ export function beltRank(belt: string | null | undefined): number {
 }
 
 export const MARTIAL_ARTS = [
+  "Jiu-Jitsu",
   "Jiu-Jitsu Brasileiro",
   "Karatê",
   "Taekwondo",
