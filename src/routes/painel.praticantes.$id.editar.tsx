@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { useT } from "@/lib/i18n";
-import { BELT_COLORS } from "@/lib/belts";
+import { BELTS } from "@/lib/belts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -105,7 +105,7 @@ function EditPracPage() {
             <Select value={belt} onValueChange={setBelt}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                {Object.keys(BELT_COLORS).map((b) => (
+                {BELTS.map((b) => (
                   <SelectItem key={b} value={b}>{b}</SelectItem>
                 ))}
               </SelectContent>

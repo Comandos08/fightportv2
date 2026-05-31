@@ -3,14 +3,8 @@ import { cn } from "@/lib/utils";
 
 export function getBeltTailwindClasses(belt: string | null | undefined): { wrapper: string; dot: string; gradientStyle?: string } {
   const x = (belt ?? "").toLowerCase().trim();
-  if (x.includes("vermelha e preta"))
-    return { wrapper: "text-[#dddddd]", dot: "bg-[#b21e1e]", gradientStyle: "linear-gradient(90deg, #b21e1e 50%, #1c1c1f 50%)" };
-  if (x.includes("vermelha e branca"))
-    return { wrapper: "text-[#555555]", dot: "bg-[#b21e1e]", gradientStyle: "linear-gradient(90deg, #b21e1e 50%, #eceae4 50%)" };
   if (x.includes("vermelha") || x.includes("red"))
-    return { wrapper: "bg-[#fee2e2] text-[#7f1d1d]", dot: "bg-[#ef4444]" };
-  if (x.includes("coral"))
-    return { wrapper: "bg-[#ffe4e6] text-[#881337]", dot: "bg-[#fb7185]" };
+    return { wrapper: "bg-[#FEE2E2] text-[#991b1b]", dot: "bg-[#dc2626]" };
   if (x.includes("preta") || x.includes("black"))
     return { wrapper: "bg-[#1c1c1f] border border-[#333333] text-[#dddddd]", dot: "bg-[#555555]" };
   if (x.includes("marrom") || x.includes("brown"))
@@ -40,13 +34,12 @@ export function BeltBadge({
   size?: "sm" | "md" | "lg";
 }) {
   const getLabel = useBeltLabel();
-  const { wrapper, dot, gradientStyle } = getBeltTailwindClasses(belt);
+  const { wrapper, dot } = getBeltTailwindClasses(belt);
   const sz =
     size === "sm" ? "text-[10px] px-2 py-0.5" : size === "lg" ? "text-sm px-4 py-1.5" : "text-[11px] px-2.5 py-0.5";
   return (
     <span
       className={cn("inline-flex items-center gap-1.5 rounded-full font-medium", sz, wrapper, className)}
-      style={gradientStyle ? { background: gradientStyle } : undefined}
     >
       <span className={cn("w-[7px] h-[7px] rounded-full flex-shrink-0", dot)} />
       {getLabel(belt)}

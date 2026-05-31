@@ -1,3 +1,26 @@
+// Canonical belt names in ascending hierarchy order, matching the database.
+export const BELTS = [
+  "Branca",
+  "Cinza",
+  "Amarela",
+  "Laranja",
+  "Verde",
+  "Azul",
+  "Roxa",
+  "Marrom",
+  "Preta",
+  "Preta 1º Grau",
+  "Preta 2º Grau",
+  "Preta 3º Grau",
+  "Preta 4º Grau",
+  "Preta 5º Grau",
+  "Preta 6º Grau",
+  "Vermelha e Preta 7º Grau",
+  "Vermelha e Branca 8º Grau",
+  "Vermelha 9º Grau",
+  "Vermelha 10º Grau",
+] as const;
+
 // Belt color tokens (CSS variables defined in styles.css).
 export const BELT_COLORS: Record<string, string> = {
   Branca: "var(--belt-white)",
@@ -9,7 +32,6 @@ export const BELT_COLORS: Record<string, string> = {
   Roxa: "var(--belt-purple)",
   Marrom: "var(--belt-brown)",
   Preta: "var(--belt-black)",
-  Coral: "var(--belt-coral)",
   Vermelha: "var(--belt-red)",
 };
 
@@ -37,7 +59,6 @@ export function beltCssColor(belt: string | null | undefined): string {
   if (x.includes("roxa") || x.includes("purple")) return "var(--belt-purple)";
   if (x.includes("azul") || x.includes("blue")) return "var(--belt-blue)";
   if (x.includes("verde") || x.includes("green")) return "var(--belt-green)";
-  if (x.includes("coral")) return "var(--belt-coral)";
   if (x.includes("laranja") || x.includes("orange")) return "var(--belt-orange)";
   if (x.includes("amarela") || x.includes("yellow")) return "var(--belt-yellow)";
   if (x.includes("cinza") || x.includes("grey") || x.includes("gray")) return "var(--belt-grey)";
@@ -63,29 +84,7 @@ export function beltDarkText(belt: string | null | undefined): boolean {
 
 // Canonical PT belt names in ascending hierarchy order.
 // Sorting always uses canonical values; getBeltLabel handles localized display.
-const BELT_ORDER: readonly string[] = [
-  "Branca",
-  "Cinza",
-  "Amarela",
-  "Laranja",
-  "Verde",
-  "Azul",
-  "Roxa",
-  "Marrom",
-  "Coral",
-  "Preta",
-  "Preta 1º Grau",
-  "Preta 2º Grau",
-  "Preta 3º Grau",
-  "Preta 4º Grau",
-  "Preta 5º Grau",
-  "Preta 6º Grau",
-  "Vermelha e Preta 7º Grau",
-  "Vermelha e Branca 8º Grau",
-  "Vermelha 9º Grau",
-  "Vermelha 10º Grau",
-  "Vermelha",
-];
+const BELT_ORDER: readonly string[] = [...BELTS];
 
 const _BELT_RANK = new Map<string, number>(BELT_ORDER.map((b, i) => [b, i]));
 

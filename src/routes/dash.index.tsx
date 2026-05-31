@@ -13,12 +13,9 @@ export const Route = createFileRoute("/dash/")({
 
 function DashBeltBadge({ belt }: { belt: string | null | undefined }) {
   if (!belt) return <span className="text-[11px] text-[#bbbbbb]">—</span>;
-  const { wrapper, dot, gradientStyle } = getBeltTailwindClasses(belt);
+  const { wrapper, dot } = getBeltTailwindClasses(belt);
   return (
-    <span
-      className={`inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[20px] text-[11px] font-medium whitespace-nowrap ${wrapper}`}
-      style={gradientStyle ? { background: gradientStyle } : undefined}
-    >
+    <span className={`inline-flex items-center gap-[5px] px-[9px] py-[3px] rounded-[20px] text-[11px] font-medium whitespace-nowrap ${wrapper}`}>
       <span className={`w-[7px] h-[7px] rounded-full flex-shrink-0 ${dot}`} />
       {belt}
     </span>
